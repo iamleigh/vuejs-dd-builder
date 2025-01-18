@@ -1,0 +1,15 @@
+{
+	"semi": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"endOfLine": "lf",
+	"useTabs": true,
+	"overrides": [
+		{
+			"files": "package.json",
+			"options": {
+				"useTabs": false
+			}
+		}
+	]
+}

@@ -1,0 +1,8 @@
+# Ignore specific files
+.vscode/
+public/
+package-lock.json
+
+# Ignore specific file patterns
+*.min.js
+dist/**/*.js
