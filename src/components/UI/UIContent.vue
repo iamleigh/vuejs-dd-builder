@@ -10,8 +10,14 @@
 		<aside v-if="isSecondarySidebarVisible" class="secondary-sidebar">
 			<h3>Elements</h3>
 			<ul>
-				<li>Text Element</li>
-				<li>Image Element</li>
+				<li
+					v-for="element in elements"
+					:key="element.type"
+					draggable="true"
+					@dragstart="onDragStart(element)"
+				>
+					{{ element.label }}
+				</li>
 			</ul>
 		</aside>
 
@@ -42,6 +48,10 @@ export default {
 	data() {
 		return {
 			isSecondarySidebarVisible: false,
+			elements: [
+				{ type: 'TextElement', label: 'Text Element' },
+				{ type: 'ImageElement', label: 'Image Element' },
+			],
 		};
 	},
 	methods: {
