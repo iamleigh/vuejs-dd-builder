@@ -59,6 +59,8 @@
 						<img
 							src="https://www.gynprog.com.br/wp-content/uploads/2017/06/wood-blog-placeholder.jpg"
 							alt=""
+							width="300"
+							height="auto"
 						/>
 					</div>
 				</div>
