@@ -2,10 +2,10 @@
 	<div class="ui-content">
 		<!-- Left Sidebar -->
 		<UISidebar>
-			<menu>
+			<UIMenu>
 				<UIButton label="Elements" @click="toggleSecondarySidebar" />
 				<UIButton label="Export" @click="exportContent" />
-			</menu>
+			</UIMenu>
 
 			<UISidebar
 				v-if="isSecondarySidebarVisible"
@@ -92,11 +92,13 @@
 import { ref } from 'vue';
 import UIButton from './UIButton.vue';
 import UISidebar from './UISidebar.vue';
+import UIMenu from './UIMenu.vue';
 
 export default {
 	name: 'UIContent',
 	components: {
 		UIButton,
+		UIMenu,
 		UISidebar,
 	},
 	setup() {
