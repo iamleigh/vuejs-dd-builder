@@ -82,19 +82,62 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
 	name: 'UIContent',
 	props: {},
-	data() {
+	setup() {
+		const isSecondarySidebarVisible = ref(false);
+		const elements = ref([
+			{ type: 'TextElement', label: 'Text Element' },
+			{ type: 'ImageElement', label: 'Image Element' },
+		]);
+		const droppedElements = ref([]);
+		const ghostIndex = ref(null);
+		const isDragging = ref(false);
+
+		const toggleSecondarySidebar = () => {
+			isSecondarySidebarVisible.value = !isSecondarySidebarVisible.value;
+		};
+
+		const onDragStart = (event, element) => {
+			isDragging.value = true;
+			event.dataTransfer.setData('element', JSON.stringify(element));
+		};
+
+		const onDragOver = (index) => {
+			ghostIndex.value =
+				index !== undefined ? index : droppedElements.value.length;
+		};
+
+		const onDragLeave = () => {
+			ghostIndex.value = null;
+		};
+
+		const onDrop = (event) => {
+			const element = JSON.parse(event.dataTransfer.getData('element'));
+			if (ghostIndex.value !== null) {
+				droppedElements.value.splice(ghostIndex.value, 0, element);
+			} else {
+				droppedElements.value.push(element);
+			}
+			isSecondarySidebarVisible.value = false;
+			isDragging.value = false;
+			ghostIndex.value = null;
+		};
+
 		return {
-			isSecondarySidebarVisible: false,
-			isDragging: false,
-			ghostIndex: null,
-			elements: [
-				{ type: 'TextElement', label: 'Text Element' },
-				{ type: 'ImageElement', label: 'Image Element' },
-			],
-			droppedElements: [],
+			isSecondarySidebarVisible,
+			elements,
+			droppedElements,
+			ghostIndex,
+			isDragging,
+			toggleSecondarySidebar,
+			onDragStart,
+			onDragOver,
+			onDragLeave,
+			onDrop,
 		};
 	},
 	computed: {
@@ -104,33 +147,6 @@ export default {
 				height: '140px',
 				border: '2px dashed #ccc',
 			};
-		},
-	},
-	methods: {
-		toggleSecondarySidebar() {
-			this.isSecondarySidebarVisible = !this.isSecondarySidebarVisible;
-		},
-		onDragStart(event, element) {
-			this.isDragging = true;
-			event.dataTransfer.setData('element', JSON.stringify(element));
-		},
-		onDragOver(index) {
-			this.ghostIndex =
-				index !== undefined ? index : this.droppedElements.length;
-		},
-		onDragLeave() {
-			this.ghostIndex = null;
-		},
-		onDrop(event) {
-			const element = JSON.parse(event.dataTransfer.getData('element'));
-			if (this.ghostIndex !== null) {
-				this.droppedElements.splice(this.ghostIndex, 0, element);
-			} else {
-				this.droppedElements.push(element);
-			}
-			this.isSecondarySidebarVisible = false;
-			this.isDragging = false;
-			this.ghostIndex = null;
 		},
 	},
 };
