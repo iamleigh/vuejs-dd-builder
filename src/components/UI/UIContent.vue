@@ -65,6 +65,9 @@
 							height="auto"
 						/>
 					</div>
+
+					<!-- Remove Element -->
+					<button @click="deleteElement(index)">Remove</button>
 				</div>
 
 				<!-- Ghost Placeholder -->
@@ -159,6 +162,10 @@ export default {
 			ghostIndex.value = null;
 		};
 
+		const deleteElement = (index) => {
+			droppedElements.value.splice(index, 1);
+		};
+
 		const exportContent = () => {
 			const jsonContent = JSON.stringify(droppedElements.value, null, 2);
 			console.log(jsonContent);
@@ -185,6 +192,7 @@ export default {
 			onDragLeave,
 			onDrop,
 			onDragEnd,
+			deleteElement,
 			exportContent,
 		};
 	},
