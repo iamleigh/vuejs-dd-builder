@@ -3,7 +3,7 @@
 		<!-- Left Sidebar -->
 		<aside class="sidebar">
 			<button @click="toggleSecondarySidebar">Elements</button>
-			<button>Export</button>
+			<button @click="exportContent">Export</button>
 		</aside>
 
 		<!-- Secondary Sidebar -->
@@ -127,6 +127,11 @@ export default {
 			ghostIndex.value = null;
 		};
 
+		const exportContent = (index) => {
+			const jsonContent = JSON.stringify(droppedElements.value, null, 2);
+			console.log(jsonContent);
+		};
+
 		return {
 			isSecondarySidebarVisible,
 			elements,
@@ -138,6 +143,7 @@ export default {
 			onDragOver,
 			onDragLeave,
 			onDrop,
+			exportContent,
 		};
 	},
 	computed: {
