@@ -26,7 +26,7 @@
 			<!-- Drop Zone -->
 			<div
 				class="drop-zone"
-				:class="droppedElements.length ? ' full' : ''"
+				:class="{ full: droppedElements.length }"
 				@dragover.prevent="onDragOver"
 				@dragleave="onDragLeave"
 				@drop="onDrop"
