@@ -48,14 +48,16 @@
 					v-for="(el, index) in droppedElements"
 					:key="index"
 					class="drop-item"
+					@dragstart="onDragStartReorder($event, index)"
 					@dragover.prevent="onDragOver(index)"
 					@dragleave="onDragLeave"
+					@dragend="onDragEnd"
 				>
-					<div v-if="el.type === 'TextElement'">
+					<div v-if="el.type === 'TextElement'" draggable="true">
 						<p>The quick brown fox jumps over the lazy dog.</p>
 					</div>
 
-					<div v-else-if="el.type === 'ImageElement'">
+					<div v-else-if="el.type === 'ImageElement'" draggable="true">
 						<img
 							src="https://www.gynprog.com.br/wp-content/uploads/2017/06/wood-blog-placeholder.jpg"
 							alt=""
@@ -96,6 +98,7 @@ export default {
 		const droppedElements = ref([]);
 		const ghostIndex = ref(null);
 		const isDragging = ref(false);
+		let dragSourceIndex = ref(null);
 
 		const toggleSecondarySidebar = () => {
 			isSecondarySidebarVisible.value = !isSecondarySidebarVisible.value;
@@ -104,6 +107,13 @@ export default {
 		const onDragStart = (event, element) => {
 			isDragging.value = true;
 			event.dataTransfer.setData('element', JSON.stringify(element));
+		};
+
+		const onDragStartReorder = (event, index) => {
+			isDragging.value = true;
+			dragSourceIndex.value = index;
+			event.dataTransfer.effectAllowed = 'move';
+			event.dataTransfer.setData('reorder', true);
 		};
 
 		const onDragOver = (index) => {
@@ -116,13 +126,35 @@ export default {
 		};
 
 		const onDrop = (event) => {
-			const element = JSON.parse(event.dataTransfer.getData('element'));
-			if (ghostIndex.value !== null) {
-				droppedElements.value.splice(ghostIndex.value, 0, element);
+			if (event.dataTransfer.getData('reorder')) {
+				const draggedElement = droppedElements.value.splice(
+					dragSourceIndex.value,
+					1,
+				)[0];
+
+				if (null !== ghostIndex.value) {
+					droppedElements.value.splice(ghostIndex.value, 0, draggedElement);
+				} else {
+					droppedElements.value.push(draggedElement);
+				}
 			} else {
-				droppedElements.value.push(element);
+				const element = JSON.parse(event.dataTransfer.getData('element'));
+
+				if (ghostIndex.value !== null) {
+					droppedElements.value.splice(ghostIndex.value, 0, element);
+				} else {
+					droppedElements.value.push(element);
+				}
 			}
+
+			// Reset variables after drop
 			isSecondarySidebarVisible.value = false;
+			isDragging.value = false;
+			ghostIndex.value = null;
+			dragSourceIndex.value = null;
+		};
+
+		const onDragEnd = () => {
 			isDragging.value = false;
 			ghostIndex.value = null;
 		};
@@ -148,9 +180,11 @@ export default {
 			isDragging,
 			toggleSecondarySidebar,
 			onDragStart,
+			onDragStartReorder,
 			onDragOver,
 			onDragLeave,
 			onDrop,
+			onDragEnd,
 			exportContent,
 		};
 	},
@@ -220,6 +254,8 @@ export default {
 }
 
 .drop-item {
+	cursor: move;
+	user-select: none;
 	padding: 16px;
 }
 
