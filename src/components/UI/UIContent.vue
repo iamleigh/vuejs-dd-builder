@@ -127,9 +127,17 @@ export default {
 			ghostIndex.value = null;
 		};
 
-		const exportContent = (index) => {
+		const exportContent = () => {
 			const jsonContent = JSON.stringify(droppedElements.value, null, 2);
 			console.log(jsonContent);
+
+			const blob = new Blob([jsonContent], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = 'content.json';
+			link.click();
+			URL.revokeObjectURL(url);
 		};
 
 		return {
