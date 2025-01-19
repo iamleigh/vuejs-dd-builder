@@ -18,7 +18,7 @@ defineProps({
 	</aside>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sidebar {
 	width: 200px;
 	position: relative;
@@ -30,8 +30,11 @@ defineProps({
 	}
 
 	&--float {
+		height: 100%;
 		position: absolute;
+		top: 0;
 		left: 100%;
+		margin-left: 1px; // Remove later
 	}
 }
 </style>
