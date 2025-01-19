@@ -1,10 +1,10 @@
 <template>
 	<div class="ui-content">
 		<!-- Left Sidebar -->
-		<aside class="sidebar">
+		<UISidebar>
 			<button @click="toggleSecondarySidebar">Elements</button>
 			<button @click="exportContent">Export</button>
-		</aside>
+		</UISidebar>
 
 		<!-- Secondary Sidebar -->
 		<aside v-if="isSecondarySidebarVisible" class="secondary-sidebar">
@@ -80,18 +80,19 @@
 		</main>
 
 		<!-- Right Sidebar -->
-		<aside class="sidebar">
-			<h3>Settings</h3>
-		</aside>
+		<UISidebar title="Settings" />
 	</div>
 </template>
 
 <script>
 import { ref } from 'vue';
+import UISidebar from './UISidebar.vue';
 
 export default {
 	name: 'UIContent',
-	props: {},
+	components: {
+		UISidebar,
+	},
 	setup() {
 		const isSecondarySidebarVisible = ref(false);
 		const elements = ref([
@@ -219,12 +220,6 @@ export default {
 	flex: 1;
 	padding: 24px;
 	background: #f5f5f5;
-}
-
-.sidebar {
-	width: 200px;
-	background: #919191;
-	padding: 10px;
 }
 
 .secondary-sidebar {
