@@ -14,7 +14,7 @@
 					v-for="element in elements"
 					:key="element.type"
 					draggable="true"
-					@dragstart="onDragStart(element)"
+					@dragstart="onDragStart($event, element)"
 				>
 					{{ element.label }}
 				</li>
@@ -110,7 +110,7 @@ export default {
 		toggleSecondarySidebar() {
 			this.isSecondarySidebarVisible = !this.isSecondarySidebarVisible;
 		},
-		onDragStart(element) {
+		onDragStart(event, element) {
 			this.isDragging = true;
 			event.dataTransfer.setData('element', JSON.stringify(element));
 		},
