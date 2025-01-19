@@ -2,24 +2,28 @@
 	<div class="ui-content">
 		<!-- Left Sidebar -->
 		<UISidebar>
-			<button @click="toggleSecondarySidebar">Elements</button>
-			<button @click="exportContent">Export</button>
-		</UISidebar>
+			<menu>
+				<UIButton label="Elements" @click="toggleSecondarySidebar" />
+				<UIButton label="Export" @click="exportContent" />
+			</menu>
 
-		<!-- Secondary Sidebar -->
-		<aside v-if="isSecondarySidebarVisible" class="secondary-sidebar">
-			<h3>Elements</h3>
-			<ul>
-				<li
-					v-for="element in elements"
-					:key="element.type"
-					draggable="true"
-					@dragstart="onDragStart($event, element)"
-				>
-					{{ element.label }}
-				</li>
-			</ul>
-		</aside>
+			<UISidebar
+				v-if="isSecondarySidebarVisible"
+				title="Elements"
+				:float="true"
+			>
+				<ul>
+					<li
+						v-for="element in elements"
+						:key="element.type"
+						draggable="true"
+						@dragstart="onDragStart($event, element)"
+					>
+						{{ element.label }}
+					</li>
+				</ul>
+			</UISidebar>
+		</UISidebar>
 
 		<!-- Content Area -->
 		<main class="content-area">
@@ -86,11 +90,13 @@
 
 <script>
 import { ref } from 'vue';
+import UIButton from './UIButton.vue';
 import UISidebar from './UISidebar.vue';
 
 export default {
 	name: 'UIContent',
 	components: {
+		UIButton,
 		UISidebar,
 	},
 	setup() {
