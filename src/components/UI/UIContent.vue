@@ -3,83 +3,52 @@
 		<!-- Left Sidebar -->
 		<UISidebar>
 			<UIMenu>
-				<UIButton label="Elements" @click="toggleSecondarySidebar" />
-				<UIButton label="Export" @click="exportContent" />
+				<UIButton label="Elements" @click="openSidebar" />
+				<UIButton label="Export" @click="exportElements" />
 			</UIMenu>
 
-			<UISidebar
-				v-if="isSecondarySidebarVisible"
-				title="Elements"
-				:float="true"
-			>
-				<ul>
-					<li
-						v-for="element in elements"
-						:key="element.type"
-						draggable="true"
-						@dragstart="onDragStart($event, element)"
-					>
-						{{ element.label }}
-					</li>
-				</ul>
+			<UISidebar v-if="isSidebarOpen" title="Elements" :float="true">
+				<draggableComponent
+					tag="ul"
+					class="sidebar__list"
+					:list="elements"
+					:group="{ name: 'blocks', pull: 'clone', put: false }"
+					:clone="cloneElement"
+					:sort="false"
+					item-key="id"
+				>
+					<template #item="{ element }">
+						<li>{{ element.label }}</li>
+					</template>
+				</draggableComponent>
 			</UISidebar>
 		</UISidebar>
 
 		<!-- Content Area -->
 		<main class="content-area">
 			<!-- Drop Zone -->
-			<div
-				class="drop-zone"
-				:class="{ full: droppedElements.length }"
-				@dragover.prevent="onDragOver"
-				@dragleave="onDragLeave"
-				@drop="onDrop"
-			>
-				<!-- Placeholder -->
-				<div
-					v-if="!droppedElements.length && ghostIndex === null"
-					class="placeholder"
+			<div class="drop-zone-wrapper" :class="{ full: droppedElements.length }">
+				<draggableComponent
+					class="drop-zone"
+					:list="droppedElements"
+					@change="dropZoneChange"
+					group="blocks"
+					handle=".handle"
+					item-key="id"
 				>
-					<img
-						src="../../assets/placeholder-image.svg"
-						alt="Image of an element being dragged"
-					/>
-					<p>Drop content blocks from the sidebar here</p>
-				</div>
+					<template #item="{ element, index }">
+						<div :key="index" class="drop-item toolbar-wrapper">
+							<div class="toolbar">
+								<div class="handle" />
+								<UIButton label="Up" @click="moveElement(index, 'up')" />
+								<UIButton label="Down" @click="moveElement(index, 'down')" />
+								<UIButton label="Remove" @click="deleteElement(index)" />
+							</div>
 
-				<!-- Dropped Elements -->
-				<div
-					v-for="(el, index) in droppedElements"
-					:key="index"
-					class="drop-item"
-					@dragstart="onDragStartReorder($event, index)"
-					@dragover.prevent="onDragOver(index)"
-					@dragleave="onDragLeave"
-					@dragend="onDragEnd"
-				>
-					<div v-if="el.type === 'TextElement'" draggable="true">
-						<p>The quick brown fox jumps over the lazy dog.</p>
-					</div>
-
-					<div v-else-if="el.type === 'ImageElement'" draggable="true">
-						<img
-							src="https://www.gynprog.com.br/wp-content/uploads/2017/06/wood-blog-placeholder.jpg"
-							alt=""
-							width="300"
-							height="auto"
-						/>
-					</div>
-
-					<!-- Remove Element -->
-					<button @click="deleteElement(index)">Remove</button>
-				</div>
-
-				<!-- Ghost Placeholder -->
-				<div
-					v-if="ghostIndex !== null"
-					:style="ghostStyle"
-					class="ghost-placeholder"
-				></div>
+							<BlockMain :element="element.type" :value="element.value" />
+						</div>
+					</template>
+				</draggableComponent>
 			</div>
 		</main>
 
@@ -88,136 +57,80 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import UIButton from './UIButton.vue';
-import UISidebar from './UISidebar.vue';
 import UIMenu from './UIMenu.vue';
+import UISidebar from './UISidebar.vue';
+import draggableComponent from 'vuedraggable';
+import BlockMain from './Block/BlockMain.vue';
 
-export default {
-	name: 'UIContent',
-	components: {
-		UIButton,
-		UIMenu,
-		UISidebar,
+const isSidebarOpen = ref(false);
+const elements = ref([
+	{
+		type: 'TextElement',
+		label: 'Text Element',
+		value: 'The quick brown fox jumps over the lazy dog.',
 	},
-	setup() {
-		const isSecondarySidebarVisible = ref(false);
-		const elements = ref([
-			{ type: 'TextElement', label: 'Text Element' },
-			{ type: 'ImageElement', label: 'Image Element' },
-		]);
-		const droppedElements = ref([]);
-		const ghostIndex = ref(null);
-		const isDragging = ref(false);
-		let dragSourceIndex = ref(null);
+	{ type: 'ImageElement', label: 'Image Element', value: '' },
+]);
+const droppedElements = ref([]);
 
-		const toggleSecondarySidebar = () => {
-			isSecondarySidebarVisible.value = !isSecondarySidebarVisible.value;
-		};
+const openSidebar = () => {
+	isSidebarOpen.value = !isSidebarOpen.value;
+};
 
-		const onDragStart = (event, element) => {
-			isDragging.value = true;
-			event.dataTransfer.setData('element', JSON.stringify(element));
-		};
+const dropZoneChange = () => {
+	console.log('hello dropzone');
+};
 
-		const onDragStartReorder = (event, index) => {
-			isDragging.value = true;
-			dragSourceIndex.value = index;
-			event.dataTransfer.effectAllowed = 'move';
-			event.dataTransfer.setData('reorder', true);
-		};
+const cloneElement = (element) => {
+	const clonedElement = {
+		type: element.type,
+		label: element.label,
+		value: element.value,
+	};
 
-		const onDragOver = (index) => {
-			ghostIndex.value =
-				index !== undefined ? index : droppedElements.value.length;
-		};
+	return clonedElement;
+};
 
-		const onDragLeave = () => {
-			ghostIndex.value = null;
-		};
+const moveElement = (index, position) => {
+	if ('up' !== position && 'down' !== position) {
+		throw new Error('The position variable must be "up" or "down".');
+	}
 
-		const onDrop = (event) => {
-			if (event.dataTransfer.getData('reorder')) {
-				const draggedElement = droppedElements.value.splice(
-					dragSourceIndex.value,
-					1,
-				)[0];
+	const totalElements = droppedElements.value.length;
 
-				if (null !== ghostIndex.value) {
-					droppedElements.value.splice(ghostIndex.value, 0, draggedElement);
-				} else {
-					droppedElements.value.push(draggedElement);
-				}
-			} else {
-				const element = JSON.parse(event.dataTransfer.getData('element'));
+	if (1 < totalElements) {
+		if (0 < index && 'up' === position) {
+			const [item] = droppedElements.value.splice(index, 1);
+			droppedElements.value.splice(index - 1, 0, item);
+		} else if (totalElements - 1 > index && 'down' === position) {
+			const [item] = droppedElements.value.splice(index, 1);
+			droppedElements.value.splice(index + 1, 0, item);
+		}
+	}
+};
 
-				if (ghostIndex.value !== null) {
-					droppedElements.value.splice(ghostIndex.value, 0, element);
-				} else {
-					droppedElements.value.push(element);
-				}
-			}
+const deleteElement = (index) => {
+	droppedElements.value.splice(index, 1);
+};
 
-			// Reset variables after drop
-			isSecondarySidebarVisible.value = false;
-			isDragging.value = false;
-			ghostIndex.value = null;
-			dragSourceIndex.value = null;
-		};
+const exportElements = () => {
+	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
+	console.log(jsonContent);
 
-		const onDragEnd = () => {
-			isDragging.value = false;
-			ghostIndex.value = null;
-		};
-
-		const deleteElement = (index) => {
-			droppedElements.value.splice(index, 1);
-		};
-
-		const exportContent = () => {
-			const jsonContent = JSON.stringify(droppedElements.value, null, 2);
-			console.log(jsonContent);
-
-			const blob = new Blob([jsonContent], { type: 'application/json' });
-			const url = URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = 'content.json';
-			link.click();
-			URL.revokeObjectURL(url);
-		};
-
-		return {
-			isSecondarySidebarVisible,
-			elements,
-			droppedElements,
-			ghostIndex,
-			isDragging,
-			toggleSecondarySidebar,
-			onDragStart,
-			onDragStartReorder,
-			onDragOver,
-			onDragLeave,
-			onDrop,
-			onDragEnd,
-			deleteElement,
-			exportContent,
-		};
-	},
-	computed: {
-		ghostStyle() {
-			return {
-				width: '100%',
-				height: '140px',
-				border: '2px dashed #ccc',
-			};
-		},
-	},
+	const blob = new Blob([jsonContent], { type: 'application/json' });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = 'content.json';
+	link.click();
+	URL.revokeObjectURL(url);
 };
 </script>
 
-<style scoped>
+<style lang="scss">
 .ui-content {
 	flex: 1;
 	display: flex;
@@ -230,49 +143,99 @@ export default {
 	background: #f5f5f5;
 }
 
-.secondary-sidebar {
-	width: 200px;
-	background: #eaeaea;
-	padding: 10px;
+.drop-zone-wrapper {
+	width: 100%;
+	max-width: 620px;
+	position: relative;
+	margin: 0 auto;
+	background: #fff;
+
+	p {
+		color: #888;
+		font-style: italic;
+	}
 }
 
 .drop-zone {
-	width: 100%;
-	max-width: 620px;
-	margin: 0 auto;
-	background: #fff;
-}
+	border: 2px dashed transparent;
 
-.placeholder {
-	width: 100%;
-	text-align: center;
-	padding: 24px;
-	border: 2px dashed #ccc;
-}
+	// STATUS: When dropzone is empty
+	&:empty {
+		min-height: 120px;
+		padding: 16px;
+		border-color: #ccc;
+		text-align: center;
 
-.placeholder img {
-	display: block;
-	margin: 0 auto;
-}
+		&:before {
+			content: '';
+			width: 100%;
+			height: 56px;
+			display: block;
+			margin-bottom: 16px;
+			background-image: url('../../assets/placeholder-image.svg');
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+		}
 
-.placeholder p {
-	text-align: center;
-}
-
-.drop-zone p {
-	color: #888;
-	font-style: italic;
+		&:after {
+			content: 'Drop content blocks from the sidebar here';
+			display: block;
+		}
+	}
 }
 
 .drop-item {
-	cursor: move;
 	user-select: none;
 	padding: 16px;
+	border: 1px solid transparent;
+
+	&:hover {
+		border-color: #000;
+	}
+
+	// STATUS: When being dragged around
+	&.sortable-ghost {
+		opacity: 0.5;
+	}
 }
 
 .ghost-placeholder {
-	width: 100%;
-	height: 140px;
+	background: #f0f0f0;
+	opacity: 0.5;
 	border: 2px dashed #ccc;
+}
+
+.toolbar-wrapper {
+	position: relative;
+}
+
+.toolbar {
+	width: 100%;
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	display: flex;
+	background: #888;
+
+	> * {
+		margin: 0 8px;
+
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
+.handle {
+	cursor: move;
+	width: 24px;
+	height: 24px;
+	display: block;
+	background: cyan;
 }
 </style>
