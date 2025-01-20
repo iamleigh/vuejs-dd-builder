@@ -5,6 +5,21 @@
 			<UIMenu>
 				<UIButton label="Elements" @click="openSidebar" />
 				<UIButton label="Export" @click="exportElements" />
+
+				<h3>Page Size</h3>
+				<p>Resize canvas (content area) to preview elements in desired size</p>
+				<UIButton
+					label="Desktop View"
+					@click="resizeCanvas('desktop')"
+				/><!-- Full Width -->
+				<UIButton
+					label="Tablet View"
+					@click="resizeCanvas('tablet')"
+				/><!-- Breakpoint: 768px -->
+				<UIButton
+					label="Mobile View"
+					@click="resizeCanvas('mobile')"
+				/><!-- Breakpoint: 460px -->
 			</UIMenu>
 
 			<UISidebar v-if="isSidebarOpen" title="Elements" :float="true">
@@ -27,13 +42,13 @@
 		<!-- Content Area -->
 		<main class="content-area">
 			<!-- Drop Zone -->
-			<div class="drop-zone-wrapper" :class="{ full: droppedElements.length }">
+			<div class="drop-zone-wrapper" :style="{ maxWidth: canvasWidth }">
 				<draggableComponent
 					class="drop-zone"
 					:list="droppedElements"
-					@change="dropZoneChange"
 					group="blocks"
 					handle=".handle"
+					@change="dropZoneChange"
 					item-key="id"
 				>
 					<template #item="{ element, index }">
@@ -75,13 +90,14 @@ const elements = ref([
 	{ type: 'ImageElement', label: 'Image Element', value: '' },
 ]);
 const droppedElements = ref([]);
+const canvasWidth = ref('100%');
 
 const openSidebar = () => {
 	isSidebarOpen.value = !isSidebarOpen.value;
 };
 
 const dropZoneChange = () => {
-	console.log('hello dropzone');
+	isSidebarOpen.value = false;
 };
 
 const cloneElement = (element) => {
@@ -127,6 +143,16 @@ const exportElements = () => {
 	link.download = 'content.json';
 	link.click();
 	URL.revokeObjectURL(url);
+};
+
+const resizeCanvas = (device) => {
+	if ('desktop' === device) {
+		canvasWidth.value = '100%';
+	} else if ('tablet' === device) {
+		canvasWidth.value = '768px';
+	} else if ('mobile' === device) {
+		canvasWidth.value = '460px';
+	}
 };
 </script>
 
@@ -182,6 +208,15 @@ const exportElements = () => {
 			content: 'Drop content blocks from the sidebar here';
 			display: block;
 		}
+	}
+
+	// ELEMENT: Ghost elements
+	li.sortable-ghost {
+		width: 100%;
+		height: 20px;
+		background: blue;
+		list-style: none;
+		font-size: 0;
 	}
 }
 
