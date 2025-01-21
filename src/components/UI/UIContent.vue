@@ -71,9 +71,6 @@
 				</draggableComponent>
 			</div>
 		</main>
-
-		<!-- Right Sidebar -->
-		<UISidebar title="Settings" />
 	</div>
 </template>
 
