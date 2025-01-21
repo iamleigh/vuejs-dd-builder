@@ -1,23 +1,35 @@
 <template>
-	<menu class="menu">
-		<slot></slot>
+	<menu
+		class="leighton-quito-menu"
+		:class="vertical ? 'leighton-quito-menu--vertical' : ''"
+	>
+		<UIButton
+			v-for="(button, index) in buttons"
+			:key="index"
+			:label="button.label"
+			:icon="button.icon"
+			@click="button.clickFn"
+			class="leighton-quito-menu__item"
+		/>
 	</menu>
 </template>
 
-<style lang="scss">
-.menu {
-	display: block;
-	margin: 0;
-	padding: 0;
+<script setup>
+import UIButton from './UIButton.vue';
 
-	button {
-		// width: 100%;
-		display: block;
-		margin: 0 0 16px;
+defineProps({
+	buttons: {
+		type: Array,
+		default: [],
+		required: true,
+	},
+	vertical: {
+		type: Boolean,
+		default: false,
+	},
+});
+</script>
 
-		&:last-child {
-			margin: 0;
-		}
-	}
-}
+<style lang="scss" scoped>
+@forward '../../assets/scss/components/ui-menu';
 </style>

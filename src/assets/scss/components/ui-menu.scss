@@ -1,0 +1,44 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 UI Sidebar
+///
+/// Give styles to the `UISidebar` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(menu) {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0 $spacing-sm;
+
+	@include element(item) {
+		margin-right: $spacing-sm;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	@include modifier(vertical) {
+		@include bp(min-width, md) {
+			display: block;
+			padding: 0;
+		}
+
+		@include modifies-element(item) {
+			@include bp(min-width, md) {
+				display: block;
+				margin-right: 0;
+				margin-bottom: $spacing-sm;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
