@@ -3,8 +3,8 @@
 		<UILogo />
 
 		<UIButton
-			label="Open Menu"
-			icon="bars"
+			:label="menuActive ? 'Open Sidebar' : 'Close Sidebar'"
+			:icon="menuActive ? 'close' : 'bars'"
 			class="leighton-quito-header__button"
 			:active="menuActive"
 			@click="$emit('click')"
