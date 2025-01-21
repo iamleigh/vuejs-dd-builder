@@ -1,19 +1,20 @@
 <template>
-	<header class="header">header</header>
+	<header class="leighton-quito-header">
+		<UILogo />
+
+		<UIButton
+			label="Open Menu"
+			icon="bars"
+			class="leighton-quito-header__button"
+		/>
+	</header>
 </template>
 
-<script>
-export default {
-	name: 'UIHeader',
-	props: {},
-};
+<script setup>
+import UIButton from './UIButton.vue';
+import UILogo from './UILogo.vue';
 </script>
 
-<style scoped>
-.header {
-	flex: 0 0 auto;
-	padding: 16px;
-	background: #232323;
-	color: #fff;
-}
+<style lang="scss">
+@forward '../../assets/scss/components/ui-header';
 </style>

@@ -1,0 +1,23 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 UI Header
+///
+/// Give styles to the `UIHeader` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(header) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: $spacing-md $spacing-lg;
+	background: $color-mono-dark;
+	color: $color-mono-light;
+
+	@include element(button) {
+		@include bp(min-width, md) {
+			display: none;
+		}
+	}
+}
