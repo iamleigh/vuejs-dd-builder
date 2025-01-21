@@ -11,7 +11,7 @@
 	padding: 0;
 
 	button {
-		width: 100%;
+		// width: 100%;
 		display: block;
 		margin: 0 0 16px;
 

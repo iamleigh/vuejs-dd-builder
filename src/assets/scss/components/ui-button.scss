@@ -1,0 +1,66 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 UI Button
+///
+/// Give styles to the `UIButton` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(button) {
+	cursor: pointer;
+	padding: 12px 12px;
+	border: 2px solid transparent;
+	border-radius: $border-radius;
+	outline: none;
+	box-shadow: none;
+	font-weight: 600;
+	font-size: 13px;
+	line-height: 20px;
+	text-align: center;
+	transition: 0.2s ease;
+
+	* {
+		user-select: none;
+		pointer-events: none;
+	}
+
+	svg:not(:only-child) {
+		&:first-child {
+			margin-right: 8px;
+		}
+
+		&:last-child {
+			margin-left: 16px;
+		}
+	}
+
+	&[disabled] {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	@include modifier(primary) {
+		background: $color-mono-dark;
+		color: $color-mono-light;
+
+		&:hover,
+		&:active {
+			border-color: $color-primary;
+		}
+
+		&:focus,
+		&:active {
+			background: $color-primary;
+		}
+	}
+
+	@include modifier(full) {
+		width: 100%;
+	}
+
+	@include modifier(icon) {
+		width: 48px;
+		height: 48px;
+	}
+}
