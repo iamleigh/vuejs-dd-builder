@@ -6,6 +6,8 @@
 			label="Open Menu"
 			icon="bars"
 			class="leighton-quito-header__button"
+			:active="menuActive"
+			@click="$emit('click')"
 		/>
 	</header>
 </template>
@@ -13,6 +15,15 @@
 <script setup>
 import UIButton from './UIButton.vue';
 import UILogo from './UILogo.vue';
+
+defineProps({
+	menuActive: {
+		type: Boolean,
+		default: false,
+	},
+});
+
+defineEmits(['click']);
 </script>
 
 <style lang="scss">
