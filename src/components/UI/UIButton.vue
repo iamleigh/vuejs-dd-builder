@@ -24,6 +24,7 @@
 			<font-awesome-icon v-else-if="'edit' === icon" :icon="faPencil" />
 			<font-awesome-icon v-else-if="'copy' === icon" :icon="faCopy" />
 			<font-awesome-icon v-else-if="'trash' === icon" :icon="faTrash" />
+			<font-awesome-icon v-else-if="'close' === icon" :icon="faXmark" />
 			<font-awesome-icon
 				v-else-if="'move' === icon"
 				:icon="faUpDownLeftRight"
@@ -50,6 +51,7 @@ import {
 	faPencil,
 	faCopy,
 	faTrash,
+	faXmark,
 	faUpDownLeftRight,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -74,6 +76,7 @@ const props = defineProps({
 				'edit',
 				'copy',
 				'trash',
+				'close',
 				'desktop',
 				'tablet',
 				'mobile',
