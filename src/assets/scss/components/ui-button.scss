@@ -45,12 +45,12 @@
 		color: $color-mono-light;
 
 		&:hover,
-		&:active {
+		&.active {
 			border-color: $color-primary;
 		}
 
 		&:focus,
-		&:active {
+		&.active {
 			background: $color-primary;
 		}
 	}
