@@ -94,6 +94,9 @@ const props = defineProps({
 			return ['primary'].includes(value);
 		},
 	},
+	setClass: {
+		type: String,
+	},
 });
 
 defineEmits(['click']);
@@ -107,6 +110,10 @@ const buttonClasses = computed(() => {
 	}
 
 	classes.push(`${prefix}--${props.design}`);
+
+	if (props.setClass) {
+		classes.push(setClass);
+	}
 
 	return classes;
 });
