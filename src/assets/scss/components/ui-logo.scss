@@ -1,0 +1,33 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 UI Logo
+///
+/// Give styles to the `UILogo` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(logo) {
+	display: flex;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	background: $color-mono-dark;
+	color: $color-mono-light;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 20px;
+
+	@include element(icon) {
+		width: 36px;
+		height: 36px;
+		flex: 0 0 auto;
+		margin-right: $spacing-sm;
+	}
+
+	@include element(text) {
+		min-width: 1px;
+		flex: 1;
+		display: block;
+	}
+}
