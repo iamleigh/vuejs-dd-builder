@@ -1,5 +1,5 @@
 <template>
-	<BlockText v-if="'TextElement' === element" :value="value" />
+	<BlockText v-if="'TextElement' === element" :id="id" :value="value" />
 	<BlockImage v-else-if="'ImageElement' === element" :value="value" />
 </template>
 
@@ -8,6 +8,10 @@ import BlockImage from './BlockImage.vue';
 import BlockText from './BlockText.vue';
 
 defineProps({
+	id: {
+		type: Number,
+		required: true,
+	},
 	element: {
 		type: String,
 		required: true,

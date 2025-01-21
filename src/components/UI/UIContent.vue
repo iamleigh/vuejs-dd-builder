@@ -60,7 +60,12 @@
 								<UIButton label="Remove" @click="deleteElement(index)" />
 							</div>
 
-							<BlockMain :element="element.type" :value="element.value" />
+							<BlockMain
+								:id="element.id"
+								:element="element.type"
+								:value="element.value"
+								@update:value="updateBlockValue"
+							/>
 						</div>
 					</template>
 				</draggableComponent>
@@ -102,12 +107,20 @@ const dropZoneChange = () => {
 
 const cloneElement = (element) => {
 	const clonedElement = {
+		id: Date.now(),
 		type: element.type,
 		label: element.label,
 		value: element.value,
 	};
 
 	return clonedElement;
+};
+
+const updateBlockValue = ({ id, value }) => {
+	const block = droppedElements.value.find((el) => el.id === id);
+	if (block) {
+		block.value = value;
+	}
 };
 
 const moveElement = (index, position) => {
