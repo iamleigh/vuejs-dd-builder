@@ -1,0 +1,38 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 UI Sidebar
+///
+/// Give styles to the `UISidebar` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(sidebar) {
+	display: block;
+	margin: $spacing-sm;
+	padding: $spacing-sm;
+	border-radius: $border-radius;
+	background: $color-mono-dark;
+
+	@include bp(max-width, md) {
+		position: absolute;
+		z-index: $index-middle;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	@include modifier(vertical) {
+		@include bp(min-width, md) {
+			overflow-y: auto;
+			margin: $spacing-md;
+			padding: $spacing-lg $spacing-md;
+		}
+	}
+
+	&:not(.mobile-active) {
+		@include bp(max-width, md) {
+			display: none;
+		}
+	}
+}
