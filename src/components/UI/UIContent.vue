@@ -117,9 +117,14 @@ const cloneElement = (element) => {
 };
 
 const updateBlockValue = ({ id, value }) => {
-	const block = droppedElements.value.find((el) => el.id === id);
-	if (block) {
-		block.value = value;
+	const index = droppedElements.value.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		// Use splice to ensure Vue's reactivity picks up the change
+		droppedElements.value.splice(index, 1, {
+			...droppedElements.value[index],
+			value,
+		});
 	}
 };
 

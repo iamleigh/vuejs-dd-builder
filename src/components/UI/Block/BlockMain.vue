@@ -1,6 +1,15 @@
 <template>
-	<BlockText v-if="'TextElement' === element" :id="id" :value="value" />
-	<BlockImage v-else-if="'ImageElement' === element" :value="value" />
+	<BlockText
+		v-if="'TextElement' === element"
+		:id="id"
+		:value="value"
+		@update:value="handleUpdate"
+	/>
+	<BlockImage
+		v-else-if="'ImageElement' === element"
+		:value="value"
+		@update:value="handleUpdate"
+	/>
 </template>
 
 <script setup>
@@ -25,4 +34,11 @@ defineProps({
 		required: true,
 	},
 });
+
+const emit = defineEmits(['update:value']);
+
+// Propagate the update:value event to the parent
+const handleUpdate = (payload) => {
+	emit('update:value', payload);
+};
 </script>

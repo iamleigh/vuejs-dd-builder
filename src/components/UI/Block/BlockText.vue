@@ -1,6 +1,11 @@
 <template>
 	<BlockWrapper>
-		<QuillyEditor ref="editor" v-model="msg" :options="editorOptions" />
+		<QuillyEditor
+			ref="editor"
+			v-model="msg"
+			:options="editorOptions"
+			@update:modelValue="updateContent"
+		/>
 	</BlockWrapper>
 </template>
 
@@ -50,10 +55,10 @@ watch(
 	},
 );
 
-// Emit changes to parent
-watch(msg, (newValue) => {
+// Emit changes to parent block
+const updateContent = (newValue) => {
 	emit('update:value', { id: props.id, value: newValue });
-});
+};
 </script>
 
 <style lang="scss" scoped>
