@@ -91,43 +91,7 @@ const exportElements = () => {
 		@clone="() => cloneElement"
 	/>
 
-	<BuilderMain>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-		<p>Test</p>
-	</BuilderMain>
+	<BuilderMain />
 
 	<Dialog
 		header="Add Elements"
