@@ -27,7 +27,8 @@
 							:isLastItem="elements.length - 1 === index"
 							:move-up="() => moveElement(index, 'up')"
 							:move-down="() => moveElement(index, 'down')"
-							:remove="() => deleteElement(index)"
+							:copy="() => copyElement(element, index)"
+							:remove="() => deleteElement(element)"
 						/>
 
 						<BlockMain
@@ -123,6 +124,17 @@ const moveElement = (index, position) => {
 			props.elements.splice(index + 1, 0, item);
 		}
 	}
+};
+
+const copyElement = (element, index) => {
+	const clonedElement = {
+		id: Date.now(),
+		type: element.type,
+		label: element.label,
+		value: element.value,
+	};
+
+	props.elements.splice(index + 1, 0, clonedElement);
 };
 
 const deleteElement = (index) => {
