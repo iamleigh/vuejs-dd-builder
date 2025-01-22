@@ -57,8 +57,15 @@ const dropZoneChange = () => {
 };
 
 // Func: Clone element
-const cloneElement = () => {
-	console.log('clone');
+const cloneElement = (element) => {
+	const clonedElement = {
+		id: Date.now(),
+		type: element.type,
+		label: element.label,
+		value: element.value,
+	};
+
+	return clonedElement;
 };
 
 // Func: Export elements added to the canvas
@@ -93,7 +100,7 @@ const exportElements = () => {
 	<BuilderToolbox
 		:elements="elements"
 		:active="showToolbox"
-		@clone="() => cloneElement"
+		:clone="cloneElement"
 	/>
 
 	<BuilderMain :elements="droppedElements" @change="dropZoneChange" />
