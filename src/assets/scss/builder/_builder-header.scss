@@ -10,7 +10,12 @@
 @include block(builder-header) {
 	@include bp(max-width, md) {
 		position: sticky;
+		z-index: 100;
 		top: 0;
 		left: 0;
+	}
+
+	@include bp(min-width, md) {
+		flex: 0 0 auto;
 	}
 }

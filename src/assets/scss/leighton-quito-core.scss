@@ -40,10 +40,11 @@ body {
 	background: var(--lq-blue-50);
 
 	#app {
+		position: relative;
+
 		@include bp(min-width, md) {
 			height: 100%;
 			display: flex;
-			flex: 1;
 			flex-direction: column;
 		}
 	}

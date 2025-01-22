@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Dialog } from 'primevue';
 import BuilderHeader from './components/Builder/BuilderHeader.vue';
+import BuilderSidebar from './components/Builder/BuilderSidebar.vue';
 import BuilderElements from './components/Builder/BuilderElements.vue';
 import BuilderMain from './components/Builder/BuilderMain.vue';
 import UIContent from './components/UI/UIContent.vue';
@@ -43,6 +44,11 @@ const addElementClick = () => {
 	dialogElements.value = false;
 };
 
+// Func: Open elements sidebar
+const openElementsSidebar = () => {
+	console.log('open');
+};
+
 // Func: Export elements added to the canvas
 const exportElements = () => {
 	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
@@ -66,8 +72,46 @@ const exportElements = () => {
 		@download="exportElements"
 	/>
 
-	<!-- <UIContent /> -->
+	<BuilderSidebar
+		@add-element="openElementsSidebar"
+		@download="exportElements"
+	/>
+
 	<BuilderMain>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
+		<p>Test</p>
 		<p>Test</p>
 	</BuilderMain>
 

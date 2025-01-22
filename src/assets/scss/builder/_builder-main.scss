@@ -15,6 +15,7 @@
 
 	@include bp(min-width, md) {
 		padding: $spacing-lg;
+		padding-left: #{$spacing-lg + $sidebar-width + $spacing-lg};
 	}
 
 	@include element(canvas) {
