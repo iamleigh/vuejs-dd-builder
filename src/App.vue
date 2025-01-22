@@ -4,12 +4,14 @@ import { Dialog } from 'primevue';
 import BuilderHeader from './components/Builder/BuilderHeader.vue';
 import BuilderSidebar from './components/Builder/BuilderSidebar.vue';
 import BuilderElements from './components/Builder/BuilderElements.vue';
+import BuilderToolbox from './components/Builder/BuilderToolbox.vue';
 import BuilderMain from './components/Builder/BuilderMain.vue';
 import UIContent from './components/UI/UIContent.vue';
 import 'primeicons/primeicons.css';
 
 const openMenubar = ref(false);
 const dialogElements = ref(false);
+const showToolbox = ref(false);
 
 // List of elements
 const elements = ref([
@@ -46,7 +48,12 @@ const addElementClick = () => {
 
 // Func: Open elements sidebar
 const openElementsSidebar = () => {
-	console.log('open');
+	showToolbox.value = !showToolbox.value;
+};
+
+// Func: Clone element
+const cloneElement = () => {
+	console.log('clone');
 };
 
 // Func: Export elements added to the canvas
@@ -73,8 +80,15 @@ const exportElements = () => {
 	/>
 
 	<BuilderSidebar
+		:open-toolbox="showToolbox"
 		@add-element="openElementsSidebar"
 		@download="exportElements"
+	/>
+
+	<BuilderToolbox
+		:elements="elements"
+		:active="showToolbox"
+		@clone="() => cloneElement"
 	/>
 
 	<BuilderMain>
