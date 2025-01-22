@@ -10,7 +10,7 @@
 			class="leighton-quito-builder-toolbox__list"
 			:list="elements"
 			:group="{ name: 'blocks', pull: 'clone', put: false }"
-			:clone="$emit('clone')"
+			:clone="clone"
 			:sort="false"
 			item-key="id"
 		>
@@ -56,9 +56,10 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	clone: {
+		type: Function,
+	},
 });
-
-defineEmits(['clone']);
 </script>
 
 <style lang="scss" scope>
