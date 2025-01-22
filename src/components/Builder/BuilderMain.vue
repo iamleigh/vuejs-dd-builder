@@ -15,13 +15,14 @@
 				<template #item="{ element, index }">
 					<div
 						:key="index"
-						class="drop-item toolbar-wrapper"
+						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
 						@mouseover="currentItem = index"
 						@mouseleave="currentItem = null"
 					>
 						<BlockTools
 							v-if="currentItem === index"
+							class="leighton-quito-builder-item__toolbar"
 							:isFirstItem="0 === index"
 							:isLastItem="elements.length - 1 === index"
 							:move-up="() => moveElement(index, 'up')"
@@ -131,5 +132,6 @@ const deleteElement = (index) => {
 
 <style lang="scss" scope>
 @forward '../../assets/scss/builder/builder-main';
+@forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-devices';
 </style>
