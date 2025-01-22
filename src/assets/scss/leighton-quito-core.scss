@@ -1,3 +1,5 @@
+@use './utils/utils' as *;
+
 /// -----------------------------------------------------------------------------
 /// 🟢 Core
 ///
@@ -25,20 +27,25 @@
 
 html,
 body {
-	overflow: hidden;
-	height: 100%;
+	@include bp(min-width, md) {
+		overflow: hidden;
+		height: 100%;
+	}
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	background: var(--lq-blue-50);
 
 	#app {
-		height: 100%;
-		display: flex;
-		flex: 1;
-		flex-direction: column;
+		@include bp(min-width, md) {
+			height: 100%;
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
 	}
 }
 
@@ -49,13 +56,4 @@ p {
 a {
 	font-weight: 500;
 	text-decoration: none;
-}
-
-button {
-	cursor: pointer;
-}
-
-[disabled] {
-	cursor: default;
-	pointer-events: none;
 }

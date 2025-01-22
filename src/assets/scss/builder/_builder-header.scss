@@ -3,10 +3,14 @@
 /// -----------------------------------------------------------------------------
 /// 🟢 Builder Header
 ///
-/// Give styles to the `Builder Header` component.
+/// Give styles to the `BuilderHeader` component.
 ///
 /// @author Leighton Quito (iamleigh.com)
 /// -----------------------------------------------------------------------------
 @include block(builder-header) {
-	position: relative;
+	@include bp(max-width, md) {
+		position: sticky;
+		top: 0;
+		left: 0;
+	}
 }
