@@ -1,0 +1,12 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Header
+///
+/// Give styles to the `Builder Header` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-header) {
+	position: relative;
+}
