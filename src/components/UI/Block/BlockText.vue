@@ -61,8 +61,4 @@ const updateContent = (newValue) => {
 };
 </script>
 
-<style lang="scss" scoped>
-p {
-	color: blue;
-}
-</style>
+<style lang="scss" scoped></style>

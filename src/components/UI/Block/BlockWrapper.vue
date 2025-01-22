@@ -16,9 +16,4 @@ defineProps({
 });
 </script>
 
-<style lang="scss" scoped>
-.block {
-	padding: 24px;
-	background: pink;
-}
-</style>
+<style lang="scss" scoped></style>

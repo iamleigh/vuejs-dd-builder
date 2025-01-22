@@ -9,6 +9,7 @@
 /// -----------------------------------------------------------------------------
 @include block(builder-devices) {
 	position: fixed;
+	z-index: 100;
 	right: $spacing-lg;
 	bottom: $spacing-lg;
 	border-radius: var(--lq-border-radius-md);

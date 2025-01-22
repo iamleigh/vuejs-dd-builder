@@ -12,11 +12,4 @@
 import BlockWrapper from './BlockWrapper.vue';
 </script>
 
-<style lang="scss" scoped>
-.block-image {
-	width: auto;
-	max-height: 120px;
-	display: block;
-	margin: 0 auto;
-}
-</style>
+<style lang="scss" scoped></style>
