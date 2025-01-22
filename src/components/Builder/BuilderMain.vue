@@ -4,7 +4,32 @@
 			class="leighton-quito-builder-main__canvas"
 			:class="'leighton-quito-builder-main__canvas--' + canvasWidth"
 		>
-			<slot></slot>
+			<draggableComponent
+				class="drop-zone"
+				:list="elements"
+				group="blocks"
+				handle=".handle"
+				@change="$emit('change')"
+				item-key="id"
+			>
+				<template #item="{ element, index }">
+					<div :key="index" class="drop-item toolbar-wrapper">
+						<!-- <div class="toolbar">
+							<div class="handle" />
+							<UIButton label="Up" @click="moveElement(index, 'up')" />
+							<UIButton label="Down" @click="moveElement(index, 'down')" />
+							<UIButton label="Remove" @click="deleteElement(index)" />
+						</div> -->
+
+						<BlockMain
+							:id="element.id"
+							:element="element.type"
+							:value="element.value"
+							@update:value="updateBlockValue"
+						/>
+					</div>
+				</template>
+			</draggableComponent>
 		</div>
 
 		<aside class="leighton-quito-builder-devices" aria-label="Device Selection">
@@ -38,6 +63,16 @@
 <script setup>
 import { ref } from 'vue';
 import { Button } from 'primevue';
+import BlockMain from '../UI/Block/BlockMain.vue';
+import draggableComponent from 'vuedraggable';
+
+const props = defineProps({
+	elements: {
+		type: Array,
+		default: null,
+		required: true,
+	},
+});
 
 const canvasWidth = ref(null);
 
@@ -46,6 +81,18 @@ const resizeCanvas = (device) => {
 		canvasWidth.value = null;
 	} else {
 		canvasWidth.value = device;
+	}
+};
+
+const updateBlockValue = ({ id, value }) => {
+	const index = props.elements.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		// Use splice to ensure Vue's reactivity picks up the change
+		props.elements.splice(index, 1, {
+			...props.elements[index],
+			value,
+		});
 	}
 };
 </script>
