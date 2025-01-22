@@ -2,19 +2,18 @@
 	<header class="leighton-quito-header">
 		<UILogo />
 
-		<UIButton
-			:label="menuActive ? 'Open Sidebar' : 'Close Sidebar'"
-			:icon="menuActive ? 'close' : 'bars'"
-			class="leighton-quito-header__button"
-			:active="menuActive"
+		<Button
+			:aria-label="menuActive ? 'Open Sidebar' : 'Close Sidebar'"
+			:icon="menuActive ? 'pi pi-times' : 'pi pi-bars'"
+			severity="contrast"
 			@click="$emit('click')"
 		/>
 	</header>
 </template>
 
 <script setup>
-import UIButton from './UIButton.vue';
 import UILogo from './UILogo.vue';
+import { Button } from 'primevue';
 
 defineProps({
 	menuActive: {
