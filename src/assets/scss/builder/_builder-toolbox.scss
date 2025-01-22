@@ -70,6 +70,8 @@
 	}
 
 	@include modifier(active) {
-		display: block;
+		@include bp(min-width, md) {
+			display: block;
+		}
 	}
 }
