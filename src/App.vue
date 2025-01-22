@@ -19,6 +19,9 @@ const elements = ref([
 	{ type: 'ImageElement', label: 'Image Element', value: 'noimage.png' },
 ]);
 
+// List of elements added to the canvas (drop-zone)
+const droppedElements = ref([]);
+
 // Func: Toggle menubar visibility
 const toggleSidebar = () => {
 	openMenubar.value = !openMenubar.value;
@@ -38,6 +41,20 @@ const addElementClick = () => {
 	openMenubar.value = false;
 	dialogElements.value = false;
 };
+
+// Func: Export elements added to the canvas
+const exportElements = () => {
+	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
+	console.log(jsonContent);
+
+	const blob = new Blob([jsonContent], { type: 'application/json' });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = 'content.json';
+	link.click();
+	URL.revokeObjectURL(url);
+};
 </script>
 
 <template>
@@ -45,6 +62,7 @@ const addElementClick = () => {
 		:open-sidebar="openMenubar"
 		@click="toggleSidebar"
 		@add-element="openElementsDialog"
+		@download="exportElements"
 	/>
 
 	<!-- <UIContent /> -->

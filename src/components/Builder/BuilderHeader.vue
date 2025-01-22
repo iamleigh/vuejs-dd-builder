@@ -40,6 +40,7 @@
 				aria-label="Download"
 				icon="pi pi-download"
 				severity="contrast"
+				@click="$emit('download')"
 			/>
 		</div>
 	</header>
@@ -56,7 +57,7 @@ defineProps({
 	},
 });
 
-defineEmits(['click', 'add-element']);
+defineEmits(['click', 'add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
