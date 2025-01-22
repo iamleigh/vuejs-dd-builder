@@ -5,7 +5,7 @@
 			:class="'leighton-quito-builder-main__canvas--' + canvasWidth"
 		>
 			<draggableComponent
-				class="drop-zone"
+				class="leighton-quito-builder-area"
 				:list="elements"
 				group="blocks"
 				handle=".handle"
@@ -133,5 +133,6 @@ const deleteElement = (index) => {
 <style lang="scss" scope>
 @forward '../../assets/scss/builder/builder-main';
 @forward '../../assets/scss/builder/builder-item';
+@forward '../../assets/scss/builder/builder-area';
 @forward '../../assets/scss/builder/builder-devices';
 </style>
