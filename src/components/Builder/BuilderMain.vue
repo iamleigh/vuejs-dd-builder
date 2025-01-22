@@ -13,13 +13,21 @@
 				item-key="id"
 			>
 				<template #item="{ element, index }">
-					<div :key="index" class="drop-item toolbar-wrapper">
-						<!-- <div class="toolbar">
-							<div class="handle" />
-							<UIButton label="Up" @click="moveElement(index, 'up')" />
-							<UIButton label="Down" @click="moveElement(index, 'down')" />
-							<UIButton label="Remove" @click="deleteElement(index)" />
-						</div> -->
+					<div
+						:key="index"
+						class="drop-item toolbar-wrapper"
+						tabIndex="0"
+						@mouseover="currentItem = index"
+						@mouseleave="currentItem = null"
+					>
+						<BlockTools
+							v-if="currentItem === index"
+							:isFirstItem="0 === index"
+							:isLastItem="elements.length - 1 === index"
+							:move-up="() => moveElement(index, 'up')"
+							:move-down="() => moveElement(index, 'down')"
+							:remove="() => deleteElement(index)"
+						/>
 
 						<BlockMain
 							:id="element.id"
@@ -65,6 +73,7 @@ import { ref } from 'vue';
 import { Button } from 'primevue';
 import BlockMain from '../UI/Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
+import BlockTools from '../UI/Block/BlockTools.vue';
 
 const props = defineProps({
 	elements: {
@@ -75,6 +84,7 @@ const props = defineProps({
 });
 
 const canvasWidth = ref(null);
+const currentItem = ref(null);
 
 const resizeCanvas = (device) => {
 	if ('desktop' === device) {
@@ -94,6 +104,28 @@ const updateBlockValue = ({ id, value }) => {
 			value,
 		});
 	}
+};
+
+const moveElement = (index, position) => {
+	if ('up' !== position && 'down' !== position) {
+		throw new Error('The position variable must be "up" or "down".');
+	}
+
+	const totalElements = props.elements.length;
+
+	if (1 < totalElements) {
+		if (0 < index && 'up' === position) {
+			const [item] = props.elements.splice(index, 1);
+			props.elements.splice(index - 1, 0, item);
+		} else if (totalElements - 1 > index && 'down' === position) {
+			const [item] = props.elements.splice(index, 1);
+			props.elements.splice(index + 1, 0, item);
+		}
+	}
+};
+
+const deleteElement = (index) => {
+	props.elements.splice(index, 1);
 };
 </script>
 

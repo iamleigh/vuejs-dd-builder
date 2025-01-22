@@ -1,0 +1,40 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Block Tools
+///
+/// Give styles to the `Block Tools` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(block-tools) {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-between;
+
+	@include element(inner) {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		padding: $spacing-xs;
+		border-radius: var(--lq-button-border-radius);
+		background: var(--lq-button-secondary-background);
+
+		.p-button {
+			margin-right: $spacing-sm;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	@include element(move) {
+		cursor: move;
+	}
+
+	@include modifier(active) {
+		display: flex;
+	}
+}
