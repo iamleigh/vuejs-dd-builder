@@ -12,6 +12,7 @@
 				aria-label="Desktop View"
 				icon="pi pi-desktop"
 				class="leighton-quito-builder-devices__item"
+				:disabled="!canvasWidth ? true : false"
 				@click="resizeCanvas('desktop')"
 			/>
 
@@ -19,6 +20,7 @@
 				aria-label="Tablet View"
 				icon="pi pi-tablet"
 				class="leighton-quito-builder-devices__item"
+				:disabled="'tablet' === canvasWidth ? true : false"
 				@click="resizeCanvas('tablet')"
 			/>
 
@@ -26,6 +28,7 @@
 				aria-label="Mobile View"
 				icon="pi pi-mobile"
 				class="leighton-quito-builder-devices__item"
+				:disabled="'mobile' === canvasWidth ? true : false"
 				@click="resizeCanvas('mobile')"
 			/>
 		</aside>
