@@ -71,7 +71,7 @@ const exportElements = () => {
 		header="Add Elements"
 		v-model:visible="dialogElements"
 		modal
-		:style="{ width: '90vw' }"
+		:style="{ width: '90vw', maxWidth: '420px' }"
 	>
 		<BuilderElements :elements="elements" @click="addElementClick" />
 	</Dialog>
