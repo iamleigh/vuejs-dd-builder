@@ -1,0 +1,29 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Devices
+///
+/// Give styles to the devices options in the `BuilderMain` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-devices) {
+	position: fixed;
+	right: $spacing-lg;
+	bottom: $spacing-lg;
+	border-radius: var(--lq-border-radius-md);
+
+	// Hide element on medium to lower screens
+	@include bp(max-width, md) {
+		display: none;
+	}
+
+	// Element: Device Item
+	@include element(item) {
+		margin-right: $spacing-sm;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}

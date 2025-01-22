@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Dialog } from 'primevue';
 import BuilderHeader from './components/Builder/BuilderHeader.vue';
 import BuilderElements from './components/Builder/BuilderElements.vue';
+import BuilderMain from './components/Builder/BuilderMain.vue';
 import UIContent from './components/UI/UIContent.vue';
 import 'primeicons/primeicons.css';
 
@@ -66,6 +67,9 @@ const exportElements = () => {
 	/>
 
 	<!-- <UIContent /> -->
+	<BuilderMain>
+		<p>Test</p>
+	</BuilderMain>
 
 	<Dialog
 		header="Add Elements"

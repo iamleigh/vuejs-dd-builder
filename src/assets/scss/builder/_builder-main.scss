@@ -1,0 +1,33 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Main
+///
+/// Give styles to the `BuilderMain` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-main) {
+	overflow-y: auto;
+	position: relative;
+	flex: 1;
+	padding: $spacing-md;
+
+	@include bp(min-width, md) {
+		padding: $spacing-lg;
+	}
+
+	@include element(canvas) {
+		width: 100%;
+		margin: 0 auto;
+		background: $color-mono-light;
+
+		@include modifier(tablet) {
+			max-width: $bp-md;
+		}
+
+		@include modifier(mobile) {
+			max-width: $bp-sm;
+		}
+	}
+}
