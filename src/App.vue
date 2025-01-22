@@ -51,6 +51,11 @@ const openElementsSidebar = () => {
 	showToolbox.value = !showToolbox.value;
 };
 
+// Func: Close toolbox when element is dropped in the canvas
+const dropZoneChange = () => {
+	showToolbox.value = false;
+};
+
 // Func: Clone element
 const cloneElement = () => {
 	console.log('clone');
@@ -91,7 +96,7 @@ const exportElements = () => {
 		@clone="() => cloneElement"
 	/>
 
-	<BuilderMain />
+	<BuilderMain :elements="droppedElements" @change="dropZoneChange" />
 
 	<Dialog
 		header="Add Elements"
