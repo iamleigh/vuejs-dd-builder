@@ -19,8 +19,22 @@ const elements = ref([
 		type: 'TextElement',
 		label: 'Text Element',
 		value: 'The quick brown fox jumps over the lazy dog.',
+		container: {
+			vPadding: 30,
+			hPadding: 30,
+			background: '#fff',
+		},
 	},
-	{ type: 'ImageElement', label: 'Image Element', value: 'noimage.png' },
+	{
+		type: 'ImageElement',
+		label: 'Image Element',
+		value: 'noimage.png',
+		container: {
+			vPadding: 30,
+			hPadding: 30,
+			background: '#fff',
+		},
+	},
 ]);
 
 // List of elements added to the canvas (drop-zone)
@@ -63,6 +77,7 @@ const cloneElement = (element) => {
 		type: element.type,
 		label: element.label,
 		value: element.value,
+		container: element.container,
 	};
 
 	return clonedElement;

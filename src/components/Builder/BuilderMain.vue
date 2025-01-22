@@ -5,7 +5,7 @@
 			:class="'leighton-quito-builder-main__canvas--' + canvasWidth"
 		>
 			<draggableComponent
-				class="leighton-quito-builder-area"
+				class="leighton-quito-builder-area lq-front-page"
 				:list="elements"
 				group="blocks"
 				handle=".handle"
@@ -35,6 +35,14 @@
 							:id="element.id"
 							:element="element.type"
 							:value="element.value"
+							:style="{
+								padding:
+									element.container.vPadding +
+									'px ' +
+									element.container.hPadding +
+									'px',
+								background: element.container.background,
+							}"
 							@update:value="updateBlockValue"
 						/>
 					</div>
@@ -132,6 +140,7 @@ const copyElement = (element, index) => {
 		type: element.type,
 		label: element.label,
 		value: element.value,
+		container: element.container,
 	};
 
 	props.elements.splice(index + 1, 0, clonedElement);
@@ -147,4 +156,7 @@ const deleteElement = (index) => {
 @forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-area';
 @forward '../../assets/scss/builder/builder-devices';
+
+// Front
+@forward '../../assets/scss/front/front-core';
 </style>
