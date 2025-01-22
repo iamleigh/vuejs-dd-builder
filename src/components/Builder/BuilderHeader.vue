@@ -32,6 +32,7 @@
 				aria-label="Add Element"
 				icon="pi pi-plus"
 				severity="contrast"
+				@click="$emit('add-element')"
 			/>
 
 			<Button
@@ -55,7 +56,7 @@ defineProps({
 	},
 });
 
-defineEmits(['click']);
+defineEmits(['click', 'add-element']);
 </script>
 
 <style lang="scss" scoped>
