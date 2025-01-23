@@ -1,18 +1,9 @@
 <script setup>
-import { ref, defineAsyncComponent } from 'vue';
+import { ref } from 'vue';
+import { asyncLoadComponent } from './utils/asyncLoadComponent';
 import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
 import UILoading from '@UI/UILoading.vue';
-
-// Helper function to lazy load components
-const asyncLoadComponent = (loader, options = {}) => {
-	return defineAsyncComponent({
-		loader,
-		loadingComponent: UILoading, // TBD: Replace with a more accurate building block
-		delay: 200,
-		...options,
-	});
-};
 
 // Lazy load components
 const BuilderHeader = asyncLoadComponent(
