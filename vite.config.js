@@ -7,4 +7,8 @@ export default defineConfig({
 	optimizeDeps: {
 		include: ['quill'],
 	},
+	test: {
+		globals: true,
+		environment: 'jsdom',
+	},
 });
