@@ -8,7 +8,9 @@
 	<BlockImage
 		v-else-if="'ImageElement' === element"
 		:value="value"
+		:height="height"
 		@update:value="handleUpdate"
+		@update:height="handleUpdate"
 	/>
 </template>
 
@@ -32,6 +34,9 @@ defineProps({
 	value: {
 		type: String,
 		required: true,
+	},
+	height: {
+		type: Number,
 	},
 });
 

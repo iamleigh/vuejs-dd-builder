@@ -1,6 +1,6 @@
 <template>
 	<div role="figure" class="theme-image">
-		<img :src="value" :alt="alt" />
+		<img :src="value" :alt="alt" :style="{ height: height + 'px' }" />
 	</div>
 </template>
 
@@ -13,6 +13,10 @@ const props = defineProps({
 	value: {
 		type: String,
 		required: true,
+	},
+	height: {
+		type: Number,
+		default: 100,
 	},
 });
 </script>
