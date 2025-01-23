@@ -19,12 +19,17 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+// Reset styles
 *,
 *:before,
 *:after {
+	margin: 0;
+	padding: 0;
+	border: 0;
 	box-sizing: border-box;
 }
 
+// Base styles
 html,
 body {
 	@include bp(min-width, md) {
@@ -38,6 +43,7 @@ body {
 	padding: 0;
 	border: 0;
 	background: var(--lq-blue-50);
+	color: var(--lq-slate-500);
 
 	#app {
 		position: relative;
@@ -50,11 +56,102 @@ body {
 	}
 }
 
-p {
-	margin: 0;
+ul,
+ol {
+	list-style: none;
 }
 
 a {
-	font-weight: 500;
 	text-decoration: none;
+	transition: 0.2s ease;
+}
+
+button {
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+[hidden] {
+	display: none;
+}
+
+[disabled] {
+	cursor: default;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+// Custom styles
+$bem-namespace: 'adminui-';
+
+@include block(title) {
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 24px;
+}
+
+@include block(subtitle) {
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+@include block(spacing) {
+	@include modifier(bottom-xs) {
+		margin-bottom: $spacing-xs;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	@include modifier(bottom-sm) {
+		margin-bottom: $spacing-sm;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	@include modifier(bottom-md) {
+		margin-bottom: $spacing-md;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	@include modifier(bottom-lg) {
+		margin-bottom: $spacing-lg;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	@include modifier(bottom-lg) {
+		margin-bottom: $spacing-lg;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+@include block(color) {
+	@include modifier(dark) {
+		color: var(--lq-slate-900);
+	}
+
+	@include modifier(light) {
+		color: var(--lq-slate-50);
+	}
+
+	@include modifier(primary) {
+		color: var(--lq-blue-500);
+	}
+
+	@include modifier(secondary) {
+		color: var(--lq-blue-500);
+	}
 }
