@@ -35,6 +35,20 @@
 						>
 							<template #settings>
 								<FieldGroup title="Container">
+									<FieldItem
+										v-if="'ImageElement' === element.type"
+										title="Height"
+									>
+										<InputGroup>
+											<InputNumber
+												v-model="element.container.height"
+												inputId="sample"
+												:min="0"
+											/>
+											<InputGroupAddon>px</InputGroupAddon>
+										</InputGroup>
+									</FieldItem>
+
 									<FieldItem title="Vertical Padding">
 										<InputGroup>
 											<InputNumber v-model="element.container.vPadding" />
@@ -50,30 +64,17 @@
 									</FieldItem>
 								</FieldGroup>
 
-								<FieldGroup title="Image">
-									<FieldItem title="Height" message="Update content height">
-										<InputGroup>
-											<InputNumber
-												v-model="element.container.height"
-												inputId="sample"
-												:min="0"
-											/>
-											<InputGroupAddon>px</InputGroupAddon>
-										</InputGroup>
-									</FieldItem>
-								</FieldGroup>
-
-								<div>
-									<p>Default Image</p>
-									<p>Select an option from the pre-defined gallery.</p>
-
+								<FieldGroup
+									title="Default Image"
+									v-if="'ImageElement' === element.type"
+								>
 									<UIRadioImageGroup
 										:group="element.id"
 										:options="imageOptions"
 										:defaultOption="element.value"
 										@update="(value) => updateElementValue(index, value)"
 									/>
-								</div>
+								</FieldGroup>
 							</template>
 						</BlockTools>
 
