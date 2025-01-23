@@ -1,5 +1,33 @@
-# Drag & Drop Builder (Vue 3 + Vite)
+# Leighton Quito
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+VueJS Simple Page Builder Challenge
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 1. Project Setup
+
+```
+npm install
+```
+
+> **Requirement(s):** Node v18.16.0 or later
+
+## 3. Development Scripts
+
+### `npm run dev`
+
+Use Vite to build the project scripts and styles while hot-reloading
+on every change.
+
+### `npm run lint`
+
+Analyze the code for potential errors and enforce coding standards.
+
+### `npm run format`
+
+Formats automatically the code enforcing consistent code formatting
+within the project.
+
+## 4. Production Scripts
+
+### `npm run build`
+
+Compiles the project to get it ready for production release.
