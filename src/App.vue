@@ -67,7 +67,7 @@ const cloneElement = (element) => {
 		type: element.type,
 		label: element.label,
 		value: element.value,
-		container: element.container,
+		container: JSON.parse(JSON.stringify(element.container)),
 	};
 
 	return clonedElement;

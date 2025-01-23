@@ -42,7 +42,6 @@
 										<InputGroup>
 											<InputNumber
 												v-model="element.container.height"
-												inputId="sample"
 												:min="0"
 											/>
 											<InputGroupAddon>px</InputGroupAddon>
@@ -169,7 +168,10 @@ const updateBlockValue = ({ id, value }) => {
 };
 
 const updateElementValue = (index, newValue) => {
-	props.elements[index].value = newValue;
+	props.elements.splice(index, 1, {
+		...props.elements[index],
+		value: newValue,
+	});
 };
 
 const moveElement = (index, position) => {
