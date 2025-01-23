@@ -39,7 +39,8 @@
 				margin-bottom: 0;
 			}
 
-			span {
+			span,
+			button {
 				display: block;
 
 				&.title {
@@ -55,6 +56,11 @@
 					background: $color-mono-light;
 					color: $color-mono-base;
 				}
+			}
+
+			button {
+				width: 100%;
+				outline: 1px solid var(--lq-slate-200);
 			}
 
 			&:hover {
