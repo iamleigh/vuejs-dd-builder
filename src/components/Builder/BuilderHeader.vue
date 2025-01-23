@@ -20,12 +20,12 @@
 			class="leighton-quito-builder-menubar"
 			:class="{ 'leighton-quito-builder-menubar--active': openSidebar }"
 		>
-			<Button
+			<!-- <Button
 				role="menuitem"
 				aria-label="Open Settings"
 				icon="pi pi-cog"
 				severity="contrast"
-			/>
+			/> -->
 
 			<Button
 				role="menuitem"

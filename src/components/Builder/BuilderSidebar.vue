@@ -1,11 +1,11 @@
 <template>
 	<aside class="leighton-quito-builder-sidebar">
-		<Button
+		<!-- <Button
 			class="leighton-quito-builder-sidebar__button"
 			icon="pi pi-cog"
 			aria-label="Open Settings"
 			severity="contrast"
-		/>
+		/> -->
 
 		<Button
 			class="leighton-quito-builder-sidebar__button"
