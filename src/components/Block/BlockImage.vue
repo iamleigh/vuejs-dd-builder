@@ -16,7 +16,7 @@ const props = defineProps({
 	},
 	height: {
 		type: Number,
-		default: 100,
+		default: null,
 	},
 });
 </script>

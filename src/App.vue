@@ -121,8 +121,8 @@ const exportElements = () => {
 	<BuilderMain :elements="droppedElements" @change="dropZoneChange" />
 
 	<Dialog
-		header="Add Elements"
 		v-model:visible="dialogElements"
+		header="Add Elements"
 		modal
 		:style="{ width: '90vw', maxWidth: '420px' }"
 	>

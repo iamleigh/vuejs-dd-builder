@@ -58,6 +58,7 @@ defineProps({
 	},
 	clone: {
 		type: Function,
+		default: null,
 	},
 });
 </script>

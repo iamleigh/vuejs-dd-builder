@@ -12,6 +12,7 @@
 defineProps({
 	title: {
 		type: String,
+		default: null,
 	},
 });
 </script>

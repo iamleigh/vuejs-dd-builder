@@ -7,8 +7,8 @@
 		:aria-label="'Select ' + label + ' Image'"
 	>
 		<input
-			type="radio"
 			:id="'element-' + id + '-image--' + value"
+			type="radio"
 			:name="'element-' + id + '-image'"
 			:value="value"
 			:checked="checked"
@@ -25,6 +25,7 @@ defineProps({
 	},
 	label: {
 		type: String,
+		default: null,
 	},
 	value: {
 		type: String,
@@ -35,6 +36,8 @@ defineProps({
 		default: false,
 	},
 });
+
+defineEmits(['update']);
 </script>
 
 <style lang="scss" scoped>

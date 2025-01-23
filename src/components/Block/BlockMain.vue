@@ -37,6 +37,7 @@ defineProps({
 	},
 	height: {
 		type: Number,
+		default: null,
 	},
 });
 
