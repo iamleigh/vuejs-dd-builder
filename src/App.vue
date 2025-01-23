@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { Analytics } from '@vercel/analytics/react';
 import { asyncLoadComponent } from './utils/asyncLoadComponent';
 import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
@@ -117,6 +118,8 @@ simulateLoadingDelay(1000);
 </script>
 
 <template>
+	<Analytics />
+
 	<UILoading
 		v-if="!hideLoadingMask"
 		:loaded="!isLoading"
