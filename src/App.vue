@@ -50,16 +50,6 @@ const openElementsDialog = () => {
 	dialogElements.value = true;
 };
 
-// Func: Add new element on click
-const addElementClick = () => {
-	// TBD: Add element on click
-	console.log('Element added');
-
-	// Close dialog and menubar
-	openMenubar.value = false;
-	dialogElements.value = false;
-};
-
 // Func: Open elements sidebar
 const openElementsSidebar = () => {
 	showToolbox.value = !showToolbox.value;
@@ -81,6 +71,16 @@ const cloneElement = (element) => {
 	};
 
 	return clonedElement;
+};
+
+// Func: Add new element on click
+const addElementClick = (element) => {
+	const clonedElement = cloneElement(element);
+	droppedElements.value.push(clonedElement);
+
+	// Close dialog and menubar
+	openMenubar.value = false;
+	dialogElements.value = false;
 };
 
 // Func: Export elements added to the canvas
@@ -126,6 +126,6 @@ const exportElements = () => {
 		modal
 		:style="{ width: '90vw', maxWidth: '420px' }"
 	>
-		<BuilderElements :elements="elements" @click="addElementClick" />
+		<BuilderElements :elements="elements" :click="addElementClick" />
 	</Dialog>
 </template>

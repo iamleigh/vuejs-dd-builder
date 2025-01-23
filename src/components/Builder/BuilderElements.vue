@@ -1,7 +1,7 @@
 <template>
 	<ul>
 		<li v-for="(element, index) in elements">
-			<button :key="index" @click="$emit('click')">
+			<button :key="index" @click="() => click(element)">
 				{{ element.label }}
 			</button>
 		</li>
@@ -14,8 +14,10 @@ defineProps({
 		type: Array,
 		required: true,
 	},
+	click: {
+		type: Function,
+	},
 });
-defineEmits(['click']);
 </script>
 
 <style lang="scss" scoped>
