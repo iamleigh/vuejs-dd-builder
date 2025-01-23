@@ -178,40 +178,35 @@ const currentItem = ref(null);
 const editPopup = ref(false);
 
 const resizeCanvas = (device) => {
-	if ('desktop' === device) {
-		canvasWidth.value = null;
-	} else {
-		canvasWidth.value = device;
-	}
+	canvasWidth.value = 'desktop' === device ? null : device;
+};
+
+const updateElement = (index, newProperties) => {
+	props.elements.splice(index, 1, {
+		...props.elements[index],
+		...newProperties,
+	});
 };
 
 const updateBlockValue = ({ id, value }) => {
 	const index = props.elements.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {
-		// Use splice to ensure Vue's reactivity picks up the change
-		props.elements.splice(index, 1, {
-			...props.elements[index],
-			value,
-		});
+		updateElement(index, { value });
 	}
 };
 
 const updateElementValue = (index, newValue) => {
-	props.elements.splice(index, 1, {
-		...props.elements[index],
-		value: newValue,
-	});
+	updateElement(index, { value: newValue });
 };
 
 const updateContainer = (index, property, newValue) => {
-	props.elements[index] = {
-		...props.elements[index],
-		container: {
-			...props.elements[index].container,
-			[property]: newValue,
-		},
+	const newContainer = {
+		...props.elements[index].container,
+		[property]: newValue,
 	};
+
+	updateElement(index, { container: newContainer });
 };
 
 const moveElement = (index, position) => {
@@ -222,35 +217,27 @@ const moveElement = (index, position) => {
 	const totalElements = props.elements.length;
 
 	if (1 < totalElements) {
-		if (0 < index && 'up' === position) {
+		const newIndex = 'up' === position ? index - 1 : index + 1;
+
+		if (0 <= newIndex && newIndex < totalElements) {
 			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index - 1, 0, item);
-		} else if (totalElements - 1 > index && 'down' === position) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index + 1, 0, item);
+			props.elements.splice(newIndex, 0, item);
 		}
 	}
 };
 
-const editElement = () => {
-	editPopup.value = !editPopup.value;
-};
+const editElement = () => (editPopup.value = !editPopup.value);
 
 const copyElement = (element, index) => {
 	const clonedElement = {
+		...element,
 		id: Date.now(),
-		type: element.type,
-		label: element.label,
-		value: element.value,
-		container: element.container,
 	};
 
 	props.elements.splice(index + 1, 0, clonedElement);
 };
 
-const deleteElement = (index) => {
-	props.elements.splice(index, 1);
-};
+const deleteElement = (index) => props.elements.splice(index, 1);
 
 const blurElement = (event) => {
 	// Check if focus remains within the current element
