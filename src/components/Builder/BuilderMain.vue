@@ -18,24 +18,71 @@
 						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
 						@mouseover="currentItem = index"
-						@mouseleave="currentItem = null"
+						@mouseleave="blurElement"
 					>
 						<BlockTools
 							v-if="currentItem === index"
 							class="leighton-quito-builder-item__toolbar"
 							:isFirstItem="0 === index"
 							:isLastItem="elements.length - 1 === index"
+							:isEditing="editPopup"
 							:move-up="() => moveElement(index, 'up')"
 							:move-down="() => moveElement(index, 'down')"
+							:edit="() => editElement(element)"
 							:copy="() => copyElement(element, index)"
 							:remove="() => deleteElement(element)"
-						/>
+							:settingsTitle="element.label"
+						>
+							<template #settings>
+								<FieldGroup title="Container">
+									<FieldItem title="Vertical Padding">
+										<InputGroup>
+											<InputNumber v-model="element.container.vPadding" />
+											<InputGroupAddon>px</InputGroupAddon>
+										</InputGroup>
+									</FieldItem>
+
+									<FieldItem title="Horizontal Padding">
+										<InputGroup>
+											<InputNumber v-model="element.container.hPadding" />
+											<InputGroupAddon>px</InputGroupAddon>
+										</InputGroup>
+									</FieldItem>
+								</FieldGroup>
+
+								<FieldGroup title="Image">
+									<FieldItem title="Height" message="Update content height">
+										<InputGroup>
+											<InputNumber
+												v-model="element.container.height"
+												inputId="sample"
+												:min="0"
+											/>
+											<InputGroupAddon>px</InputGroupAddon>
+										</InputGroup>
+									</FieldItem>
+								</FieldGroup>
+
+								<div>
+									<p>Default Image</p>
+									<p>Select an option from the pre-defined gallery.</p>
+
+									<UIRadioImageGroup
+										:group="element.id"
+										:options="imageOptions"
+										:defaultOption="element.value"
+										@update="(value) => updateElementValue(index, value)"
+									/>
+								</div>
+							</template>
+						</BlockTools>
 
 						<BlockMain
 							:id="element.id"
 							:element="element.type"
 							:value="element.value"
 							:style="{
+								height: element.container.height + 'px',
 								padding:
 									element.container.vPadding +
 									'px ' +
@@ -80,10 +127,19 @@
 
 <script setup>
 import { ref } from 'vue';
-import { Button } from 'primevue';
-import BlockMain from '../UI/Block/BlockMain.vue';
+import {
+	Button,
+	InputGroup,
+	InputGroupAddon,
+	InputNumber,
+	Message,
+} from 'primevue';
+import BlockMain from '../Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
-import BlockTools from '../UI/Block/BlockTools.vue';
+import BlockTools from '../Block/BlockTools.vue';
+import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
+import FieldGroup from '../Field/FieldGroup.vue';
+import FieldItem from '../Field/FieldItem.vue';
 
 const props = defineProps({
 	elements: {
@@ -95,6 +151,7 @@ const props = defineProps({
 
 const canvasWidth = ref(null);
 const currentItem = ref(null);
+const editPopup = ref(false);
 
 const resizeCanvas = (device) => {
 	if ('desktop' === device) {
@@ -116,6 +173,10 @@ const updateBlockValue = ({ id, value }) => {
 	}
 };
 
+const updateElementValue = (index, newValue) => {
+	props.elements[index].value = newValue;
+};
+
 const moveElement = (index, position) => {
 	if ('up' !== position && 'down' !== position) {
 		throw new Error('The position variable must be "up" or "down".');
@@ -134,6 +195,10 @@ const moveElement = (index, position) => {
 	}
 };
 
+const editElement = () => {
+	editPopup.value = !editPopup.value;
+};
+
 const copyElement = (element, index) => {
 	const clonedElement = {
 		id: Date.now(),
@@ -149,9 +214,34 @@ const copyElement = (element, index) => {
 const deleteElement = (index) => {
 	props.elements.splice(index, 1);
 };
+
+const blurElement = () => {
+	currentItem.value = null;
+	editPopup.value = false;
+};
+
+const imageOptions = ref([
+	{
+		label: 'Food',
+		value: '/assets/banner-food.webp',
+	},
+	{
+		label: 'Tourism',
+		value: '/assets/banner-tourism.webp',
+	},
+	{
+		label: 'Medicine',
+		value: '/assets/banner-medicine.webp',
+	},
+	{
+		label: 'Architecture',
+		value: '/assets/banner-architecture.webp',
+	},
+]);
 </script>
 
 <style lang="scss" scope>
+@forward '../../assets/scss/ui/ui-field.scss';
 @forward '../../assets/scss/builder/builder-main';
 @forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-area';
