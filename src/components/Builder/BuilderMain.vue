@@ -202,7 +202,7 @@ const updateBlockValue = ({ id, value }) => {
 
 const updateElementValue = (index, newValue) => {
 	const updatedElements = [...props.elements];
-	updatedElements.splice(index, 1, {
+	props.elements.splice(index, 1, {
 		...props.elements[index],
 		value: newValue,
 	});
