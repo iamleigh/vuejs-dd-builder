@@ -4,6 +4,7 @@ import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
 import UILoading from '@UI/UILoading.vue';
 
+// Helper function to lazy load components
 const asyncLoadComponent = (loader, options = {}) => {
 	return defineAsyncComponent({
 		loader,
@@ -30,15 +31,15 @@ const BuilderMain = asyncLoadComponent(
 	() => import('@Builder/BuilderMain.vue'),
 );
 
+// State variables
 const isLoading = ref(true);
 const doneLoading = ref(false);
 const hideLoadingMask = ref(false);
-
 const openMenubar = ref(false);
 const dialogElements = ref(false);
 const showToolbox = ref(false);
 
-// List of elements
+// List of predefined elements
 const elements = ref([
 	{
 		type: 'TextElement',
@@ -67,24 +68,16 @@ const elements = ref([
 const droppedElements = ref([]);
 
 // Func: Toggle menubar visibility
-const toggleSidebar = () => {
-	openMenubar.value = !openMenubar.value;
-};
+const toggleSidebar = () => (openMenubar.value = !openMenubar.value);
 
 // Func: Open elements dialog
-const openElementsDialog = () => {
-	dialogElements.value = true;
-};
+const openElementsDialog = () => (dialogElements.value = true);
 
 // Func: Open elements sidebar
-const openElementsSidebar = () => {
-	showToolbox.value = !showToolbox.value;
-};
+const openElementsSidebar = () => (showToolbox.value = !showToolbox.value);
 
 // Func: Close toolbox when element is dropped in the canvas
-const dropZoneChange = () => {
-	showToolbox.value = false;
-};
+const dropZoneChange = () => (showToolbox.value = false);
 
 // Func: Clone element
 const cloneElement = (element) => {
@@ -101,10 +94,7 @@ const cloneElement = (element) => {
 
 // Func: Add new element on click
 const addElementClick = (element) => {
-	const clonedElement = cloneElement(element);
-	droppedElements.value.push(clonedElement);
-
-	// Close dialog and menubar
+	droppedElements.value.push(cloneElement(element));
 	openMenubar.value = false;
 	dialogElements.value = false;
 };
@@ -112,30 +102,23 @@ const addElementClick = (element) => {
 // Func: Export elements added to the canvas
 const exportElements = () => {
 	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
-	console.log(jsonContent);
-
 	const blob = new Blob([jsonContent], { type: 'application/json' });
 	const url = URL.createObjectURL(blob);
+
 	const link = document.createElement('a');
 	link.href = url;
 	link.download = 'content.json';
 	link.click();
-	URL.revokeObjectURL(url);
+
+	console.log(jsonContent); // Project Requirement: Log the JSON file to the console.
+	URL.revokeObjectURL(url); // Project Requirement: Download JSON file.
 };
 
 // Func: Simulate loading
 const simulateLoadingDelay = (time) => {
-	setTimeout(() => {
-		isLoading.value = false;
-	}, time);
-
-	setTimeout(() => {
-		doneLoading.value = true;
-	}, time + 500);
-
-	setTimeout(() => {
-		hideLoadingMask.value = true;
-	}, time + 1000);
+	setTimeout(() => (isLoading.value = false), time);
+	setTimeout(() => (doneLoading.value = true), time + 500);
+	setTimeout(() => (hideLoadingMask.value = true), time + 1000);
 };
 
 // Start: Simulate loading process
