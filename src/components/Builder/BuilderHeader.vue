@@ -1,8 +1,8 @@
 <template>
 	<header class="leighton-quito-builder-header">
-		<HeaderBar :openSidebar="openSidebar" @toggleSidebar="$emit('click')" />
+		<HeaderBar :open-sidebar="openSidebar" @toggle-sidebar="$emit('click')" />
 		<HeaderMenu
-			:openSidebar="openSidebar"
+			:open-sidebar="openSidebar"
 			@add-element="$emit('add-element')"
 			@download="$emit('download')"
 		/>
