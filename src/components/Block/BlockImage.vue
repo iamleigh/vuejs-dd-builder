@@ -1,12 +1,10 @@
 <template>
-	<BlockWrapper role="figure" class="lq-front-block-image">
+	<div role="figure" class="lq-front-block-image">
 		<img :src="'/assets/banner-' + image + '.webp'" :alt="alt" />
-	</BlockWrapper>
+	</div>
 </template>
 
 <script setup>
-import BlockWrapper from './BlockWrapper.vue';
-
 const props = defineProps({
 	alt: {
 		type: String,
@@ -20,5 +18,5 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/front/front-block-image';
+@forward '../../assets/scss/front/front-block-image';
 </style>

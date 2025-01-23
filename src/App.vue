@@ -6,7 +6,6 @@ import BuilderSidebar from './components/Builder/BuilderSidebar.vue';
 import BuilderElements from './components/Builder/BuilderElements.vue';
 import BuilderToolbox from './components/Builder/BuilderToolbox.vue';
 import BuilderMain from './components/Builder/BuilderMain.vue';
-import UIContent from './components/UI/UIContent.vue';
 import 'primeicons/primeicons.css';
 
 const openMenubar = ref(false);

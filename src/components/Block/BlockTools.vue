@@ -31,8 +31,12 @@
 				icon="pi pi-pencil"
 				aria-label="Edit Element"
 				v-bind="buttonProps"
+				:severity="isEditing ? 'primary' : 'secondary'"
 				@click="edit"
 			/>
+			<BlockSettings v-if="isEditing" :title="settingsTitle">
+				<slot name="settings"></slot>
+			</BlockSettings>
 			<Button
 				v-if="copy"
 				icon="pi pi-clone"
@@ -54,6 +58,7 @@
 <script setup>
 import { reactive } from 'vue';
 import { Button } from 'primevue';
+import BlockSettings from './BlockSettings.vue';
 
 defineProps({
 	active: {
@@ -83,6 +88,13 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	isEditing: {
+		type: Boolean,
+		default: false,
+	},
+	settingsTitle: {
+		type: String,
+	},
 });
 
 const buttonProps = reactive({
@@ -92,5 +104,5 @@ const buttonProps = reactive({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/block/block-tools';
+@forward '../../assets/scss/block/block-tools';
 </style>
