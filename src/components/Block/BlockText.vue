@@ -1,5 +1,5 @@
 <template>
-	<div class="lq-front-block-text">
+	<div class="block">
 		<QuillyEditor
 			ref="editor"
 			v-model="msg"
@@ -60,4 +60,8 @@ const updateContent = (newValue) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.block {
+	display: block;
+}
+</style>

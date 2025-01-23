@@ -38,3 +38,9 @@
 		display: flex;
 	}
 }
+
+@include block(hide-md) {
+	@include bp(max-width, md) {
+		display: none;
+	}
+}

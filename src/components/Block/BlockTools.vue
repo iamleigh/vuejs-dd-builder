@@ -2,7 +2,7 @@
 	<div role="toolbar" class="leighton-quito-block-tools">
 		<div class="leighton-quito-block-tools__inner">
 			<div
-				class="handle p-button p-component p-button-icon-only p-button-sm p-button-secondary leighton-quito-block-tools__move"
+				class="handle p-button p-component p-button-icon-only p-button-sm p-button-secondary leighton-quito-block-tools__move leighton-quito-hide-md"
 				aria-hidden="true"
 			>
 				<span class="p-button-icon pi pi-arrows-alt" />
@@ -29,6 +29,7 @@
 			<Button
 				v-if="edit"
 				icon="pi pi-pencil"
+				class="leighton-quito-hide-md"
 				aria-label="Edit Element"
 				v-bind="buttonProps"
 				:severity="isEditing ? 'primary' : 'secondary'"
