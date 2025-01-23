@@ -18,5 +18,5 @@ defineProps({
 </script>
 
 <style lang="scss">
-@forward '../../assets/scss/components/ui-logo';
+@forward '../../assets/scss/ui/ui-logo';
 </style>
