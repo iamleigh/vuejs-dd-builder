@@ -1,12 +1,29 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { Dialog } from 'primevue';
-import BuilderHeader from './components/Builder/BuilderHeader.vue';
-import BuilderSidebar from './components/Builder/BuilderSidebar.vue';
-import BuilderElements from './components/Builder/BuilderElements.vue';
-import BuilderToolbox from './components/Builder/BuilderToolbox.vue';
-import BuilderMain from './components/Builder/BuilderMain.vue';
 import 'primeicons/primeicons.css';
+import UILoading from '@UI/UILoading.vue';
+
+// Lazy load components
+const BuilderHeader = defineAsyncComponent(
+	() => () => import('@Builder/BuilderHeader.vue'),
+);
+const BuilderSidebar = defineAsyncComponent(
+	() => import('@Builder/BuilderSidebar.vue'),
+);
+const BuilderElements = defineAsyncComponent(
+	() => import('@Builder/BuilderElements.vue'),
+);
+const BuilderToolbox = defineAsyncComponent(
+	() => import('@Builder/BuilderToolbox.vue'),
+);
+const BuilderMain = defineAsyncComponent(
+	() => import('@Builder/BuilderMain.vue'),
+);
+
+const isLoading = ref(true);
+const doneLoading = ref(false);
+const hideLoadingMask = ref(false);
 
 const openMenubar = ref(false);
 const dialogElements = ref(false);
@@ -96,9 +113,35 @@ const exportElements = () => {
 	link.click();
 	URL.revokeObjectURL(url);
 };
+
+// Func: Simulate loading
+const simulateLoadingDelay = (time) => {
+	setTimeout(() => {
+		isLoading.value = false;
+	}, time);
+
+	setTimeout(() => {
+		doneLoading.value = true;
+	}, time + 500);
+
+	setTimeout(() => {
+		hideLoadingMask.value = true;
+	}, time + 1000);
+};
+
+// Start: Simulate loading process
+simulateLoadingDelay(1000);
 </script>
 
 <template>
+	<UILoading
+		v-if="!hideLoadingMask"
+		:loaded="!isLoading"
+		title="Preparing"
+		message="Setting up the builder"
+		:status="doneLoading ? 'complete' : 'loading'"
+	/>
+
 	<BuilderHeader
 		:open-sidebar="openMenubar"
 		@click="toggleSidebar"

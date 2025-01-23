@@ -154,4 +154,8 @@ $bem-namespace: 'adminui-';
 	@include modifier(secondary) {
 		color: var(--lq-blue-500);
 	}
+
+	@include modifier(success) {
+		color: var(--lq-teal-500);
+	}
 }
