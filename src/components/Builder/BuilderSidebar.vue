@@ -1,12 +1,5 @@
 <template>
 	<aside class="leighton-quito-builder-sidebar">
-		<!-- <Button
-			class="leighton-quito-builder-sidebar__button"
-			icon="pi pi-cog"
-			aria-label="Open Settings"
-			severity="contrast"
-		/> -->
-
 		<Button
 			class="leighton-quito-builder-sidebar__button"
 			icon="pi pi-plus"
@@ -40,6 +33,6 @@ defineProps({
 defineEmits(['add-element', 'download']);
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 @forward '../../assets/scss/builder/builder-sidebar';
 </style>
