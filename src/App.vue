@@ -4,20 +4,29 @@ import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
 import UILoading from '@UI/UILoading.vue';
 
+const asyncLoadComponent = (loader, options = {}) => {
+	return defineAsyncComponent({
+		loader,
+		loadingComponent: UILoading, // TBD: Replace with a more accurate building block
+		delay: 200,
+		...options,
+	});
+};
+
 // Lazy load components
-const BuilderHeader = defineAsyncComponent(
-	() => () => import('@Builder/BuilderHeader.vue'),
+const BuilderHeader = asyncLoadComponent(
+	() => import('@Builder/BuilderHeader.vue'),
 );
-const BuilderSidebar = defineAsyncComponent(
+const BuilderSidebar = asyncLoadComponent(
 	() => import('@Builder/BuilderSidebar.vue'),
 );
-const BuilderElements = defineAsyncComponent(
+const BuilderElements = asyncLoadComponent(
 	() => import('@Builder/BuilderElements.vue'),
 );
-const BuilderToolbox = defineAsyncComponent(
+const BuilderToolbox = asyncLoadComponent(
 	() => import('@Builder/BuilderToolbox.vue'),
 );
-const BuilderMain = defineAsyncComponent(
+const BuilderMain = asyncLoadComponent(
 	() => import('@Builder/BuilderMain.vue'),
 );
 
