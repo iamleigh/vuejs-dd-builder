@@ -29,6 +29,7 @@ const elements = ref([
 		label: 'Image Element',
 		value: 'noimage.png',
 		container: {
+			height: 120,
 			vPadding: 30,
 			hPadding: 30,
 			background: '#fff',
