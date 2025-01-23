@@ -68,18 +68,23 @@ defineProps({
 	},
 	moveUp: {
 		type: Function,
+		default: null,
 	},
 	moveDown: {
 		type: Function,
+		default: null,
 	},
 	edit: {
 		type: Function,
+		default: null,
 	},
 	copy: {
 		type: Function,
+		default: null,
 	},
 	remove: {
 		type: Function,
+		default: null,
 	},
 	isFirstItem: {
 		type: Boolean,
@@ -95,6 +100,7 @@ defineProps({
 	},
 	settingsTitle: {
 		type: String,
+		default: null,
 	},
 });
 

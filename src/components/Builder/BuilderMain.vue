@@ -9,8 +9,8 @@
 				:list="elements"
 				group="blocks"
 				handle=".handle"
-				@change="$emit('change')"
 				item-key="id"
+				@change="$emit('change')"
 			>
 				<template #item="{ element, index }">
 					<div
@@ -25,15 +25,15 @@
 						<BlockTools
 							v-if="currentItem === index"
 							class="leighton-quito-builder-item__toolbar"
-							:isFirstItem="0 === index"
-							:isLastItem="elements.length - 1 === index"
-							:isEditing="editPopup"
+							:is-first-item="0 === index"
+							:is-last-item="elements.length - 1 === index"
+							:is-editing="editPopup"
 							:move-up="() => moveElement(index, 'up')"
 							:move-down="() => moveElement(index, 'down')"
 							:edit="() => editElement(element)"
 							:copy="() => copyElement(element, index)"
 							:remove="() => deleteElement(element)"
-							:settingsTitle="element.label"
+							:settings-title="element.label"
 						>
 							<template #settings>
 								<FieldGroup title="Container">
@@ -45,6 +45,13 @@
 											<InputNumber
 												v-model="element.container.height"
 												:min="0"
+												@change="
+													updateContainer(
+														index,
+														'height',
+														element.container.height,
+													)
+												"
 											/>
 											<InputGroupAddon>px</InputGroupAddon>
 										</InputGroup>
@@ -52,27 +59,45 @@
 
 									<FieldItem title="Vertical Padding">
 										<InputGroup>
-											<InputNumber v-model="element.container.vPadding" />
+											<InputNumber
+												v-model="element.container.vPadding"
+												@change="
+													updateContainer(
+														index,
+														'vPadding',
+														element.container.vPadding,
+													)
+												"
+											/>
 											<InputGroupAddon>px</InputGroupAddon>
 										</InputGroup>
 									</FieldItem>
 
 									<FieldItem title="Horizontal Padding">
 										<InputGroup>
-											<InputNumber v-model="element.container.hPadding" />
+											<InputNumber
+												v-model="element.container.hPadding"
+												@change="
+													updateContainer(
+														index,
+														'hPadding',
+														element.container.hPadding,
+													)
+												"
+											/>
 											<InputGroupAddon>px</InputGroupAddon>
 										</InputGroup>
 									</FieldItem>
 								</FieldGroup>
 
 								<FieldGroup
-									title="Default Image"
 									v-if="'ImageElement' === element.type"
+									title="Default Image"
 								>
 									<UIRadioImageGroup
 										:group="element.id"
 										:options="imageOptions"
-										:defaultOption="element.value"
+										:default-option="element.value"
 										@update="(value) => updateElementValue(index, value)"
 									/>
 								</FieldGroup>
@@ -146,6 +171,8 @@ const props = defineProps({
 	},
 });
 
+const emit = defineEmits(['change', 'update:elements']);
+
 const canvasWidth = ref(null);
 const currentItem = ref(null);
 const editPopup = ref(false);
@@ -159,22 +186,41 @@ const resizeCanvas = (device) => {
 };
 
 const updateBlockValue = ({ id, value }) => {
-	const index = props.elements.findIndex((el) => el.id === id);
+	const updatedElements = [...props.elements];
+	const index = updatedElements.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {
 		// Use splice to ensure Vue's reactivity picks up the change
-		props.elements.splice(index, 1, {
-			...props.elements[index],
+		updatedElements.splice(index, 1, {
+			...updatedElements[index],
 			value,
 		});
 	}
+
+	emit('update:elements', updatedElements);
 };
 
 const updateElementValue = (index, newValue) => {
-	props.elements.splice(index, 1, {
+	const updatedElements = [...props.elements];
+	updatedElements.splice(index, 1, {
 		...props.elements[index],
 		value: newValue,
 	});
+
+	emit('update:elements', updatedElements);
+};
+
+const updateContainer = (index, property, newValue) => {
+	const updatedElements = [...props.elements];
+	updatedElements[index] = {
+		...props.elements[index],
+		container: {
+			...props.elements[index].container,
+			[property]: newValue,
+		},
+	};
+
+	emit('update:elements', updatedElements);
 };
 
 const moveElement = (index, position) => {
@@ -182,17 +228,20 @@ const moveElement = (index, position) => {
 		throw new Error('The position variable must be "up" or "down".');
 	}
 
-	const totalElements = props.elements.length;
+	const updatedElements = [...props.elements];
+	const totalElements = updatedElements.length;
 
 	if (1 < totalElements) {
 		if (0 < index && 'up' === position) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index - 1, 0, item);
+			const [item] = updatedElements.splice(index, 1);
+			updatedElements.splice(index - 1, 0, item);
 		} else if (totalElements - 1 > index && 'down' === position) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index + 1, 0, item);
+			const [item] = updatedElements.splice(index, 1);
+			updatedElements.splice(index + 1, 0, item);
 		}
 	}
+
+	emit('update:elements', updatedElements);
 };
 
 const editElement = () => {
@@ -208,11 +257,17 @@ const copyElement = (element, index) => {
 		container: element.container,
 	};
 
-	props.elements.splice(index + 1, 0, clonedElement);
+	const updatedElements = [...props.elements];
+	updatedElements.splice(index + 1, 0, clonedElement);
+
+	emit('update:elements', updatedElements);
 };
 
 const deleteElement = (index) => {
-	props.elements.splice(index, 1);
+	const updatedElements = [...props.elements];
+	updatedElements.splice(index, 1);
+
+	emit('update:elements', updatedElements);
 };
 
 const blurElement = (event) => {

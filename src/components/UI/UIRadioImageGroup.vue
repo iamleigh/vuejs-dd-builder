@@ -2,8 +2,8 @@
 	<div class="radio-image-group">
 		<UIRadioImage
 			v-for="(option, index) in options"
-			:key="index"
 			:id="group"
+			:key="index"
 			:label="option.label"
 			:value="option.value"
 			:checked="selectedValue === option.value"

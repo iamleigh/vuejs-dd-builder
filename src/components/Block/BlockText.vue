@@ -4,7 +4,7 @@
 			ref="editor"
 			v-model="msg"
 			:options="editorOptions"
-			@update:modelValue="updateContent"
+			@update:model-value="updateContent"
 		/>
 	</div>
 </template>

@@ -13,6 +13,7 @@
 defineProps({
 	setClass: {
 		type: String,
+		default: null,
 	},
 });
 </script>

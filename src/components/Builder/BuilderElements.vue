@@ -1,6 +1,6 @@
 <template>
 	<ul class="leighton-quito-builder-toolbox__list">
-		<li v-for="(element, index) in elements">
+		<li v-for="(element, index) in elements" :key="index">
 			<span class="title">{{ element.label }}</span>
 
 			<button
@@ -40,6 +40,7 @@ defineProps({
 	},
 	click: {
 		type: Function,
+		default: null,
 	},
 });
 </script>
