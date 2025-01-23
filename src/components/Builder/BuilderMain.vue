@@ -84,7 +84,6 @@
 							:element="element.type"
 							:value="element.value"
 							:style="{
-								height: element.container.height + 'px',
 								padding:
 									element.container.vPadding +
 									'px ' +
@@ -92,7 +91,9 @@
 									'px',
 								background: element.container.background,
 							}"
+							:height="element.container.height"
 							@update:value="updateBlockValue"
+							@update:height="updateBlockValue"
 						/>
 					</div>
 				</template>
