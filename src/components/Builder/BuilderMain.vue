@@ -214,7 +214,16 @@ const deleteElement = (index) => {
 	props.elements.splice(index, 1);
 };
 
-const blurElement = () => {
+const blurElement = (event) => {
+	// Check if focus remains within the current element
+	if (
+		event.relatedTarget &&
+		event.currentTarget.contains(event.relatedTarget)
+	) {
+		return;
+	}
+
+	// Otherwise, reset the state
 	currentItem.value = null;
 	editPopup.value = false;
 };
