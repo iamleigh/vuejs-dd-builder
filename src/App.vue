@@ -152,6 +152,6 @@ simulateLoadingDelay(1000);
 		modal
 		:style="{ width: '90vw', maxWidth: '420px' }"
 	>
-		<BuilderElements :elements="elements" :click="addElementClick" />
+		<BuilderElements :elements="elements" @click="addElementClick" />
 	</Dialog>
 </template>

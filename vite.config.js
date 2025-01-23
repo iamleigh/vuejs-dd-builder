@@ -19,6 +19,7 @@ export default defineConfig({
 			'@Builder': path.resolve(__dirname, './src/components/Builder'),
 			'@Block': path.resolve(__dirname, './src/components/Block'),
 			'@Field': path.resolve(__dirname, './src/components/Field'),
+			'@element': path.resolve(__dirname, './src/components/Admin/Element'),
 			'@styles': path.resolve(__dirname, './src/assets/scss'),
 			'@images': path.resolve(__dirname, './src/assets/img'),
 		},
