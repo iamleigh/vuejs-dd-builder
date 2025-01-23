@@ -239,7 +239,4 @@ const imageOptions = ref([
 @forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-area';
 @forward '../../assets/scss/builder/builder-devices';
-
-// Front
-@forward '../../assets/scss/front/front-core';
 </style>

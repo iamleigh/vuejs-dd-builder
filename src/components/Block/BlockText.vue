@@ -60,6 +60,4 @@ const updateContent = (newValue) => {
 };
 </script>
 
-<style lang="scss" scoped>
-@forward '../../assets/scss/front/front-block-text';
-</style>
+<style lang="scss" scoped></style>

@@ -1,5 +1,5 @@
 <template>
-	<div role="figure" class="lq-front-block-image">
+	<div role="figure" class="theme-image">
 		<img :src="value" :alt="alt" />
 	</div>
 </template>
@@ -18,5 +18,12 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/front/front-block-image';
+.theme-image {
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+}
 </style>
