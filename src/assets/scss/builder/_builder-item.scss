@@ -1,0 +1,38 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Item
+///
+/// Give styles to the builder items inside `BuilderMain` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-item) {
+	outline: 2px dashed transparent;
+	transition: 0.2s ease;
+
+	// State: Hover
+	&:hover {
+		z-index: 100;
+		outline-color: var(--lq-blue-500, $color-primary);
+	}
+
+	// Variation: Dragged element
+	&.sortable-ghost {
+		opacity: 0.5;
+	}
+
+	// Variation: Contains a toolbar
+	@include modifier(with-toolbar) {
+		position: relative;
+
+		@include modifies-element(toolbar) {
+			position: absolute;
+			z-index: 500;
+			left: 0;
+			right: 0;
+			bottom: 100%;
+			margin: -#{$spacing-sm} $spacing-sm;
+		}
+	}
+}

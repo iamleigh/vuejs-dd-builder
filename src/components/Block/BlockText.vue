@@ -1,17 +1,16 @@
 <template>
-	<BlockWrapper>
+	<div class="block">
 		<QuillyEditor
 			ref="editor"
 			v-model="msg"
 			:options="editorOptions"
 			@update:modelValue="updateContent"
 		/>
-	</BlockWrapper>
+	</div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import BlockWrapper from './BlockWrapper.vue';
 import { QuillyEditor } from 'vue-quilly';
 import Quill from 'quill';
 
@@ -62,7 +61,7 @@ const updateContent = (newValue) => {
 </script>
 
 <style lang="scss" scoped>
-p {
-	color: blue;
+.block {
+	display: block;
 }
 </style>

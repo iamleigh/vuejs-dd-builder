@@ -1,0 +1,48 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Area
+///
+/// Give styles to the builder area inside `BuilderMain` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-area) {
+	outline: 2px dashed transparent;
+
+	// Element: Ghost new element
+	li.sortable-ghost {
+		list-style: none;
+		padding: 30px;
+
+		.title {
+			display: none;
+		}
+	}
+
+	// Status: Empty dropzone
+	&:empty {
+		min-height: 120px;
+		padding: $spacing-lg;
+		outline-color: var(--lq-slate-300, $color-mono-base);
+		color: var(--lq-slate-500, $color-mono-base);
+		text-align: center;
+
+		&:before {
+			content: '';
+			width: 100%;
+			height: 56px;
+			display: block;
+			margin-bottom: $spacing-lg;
+			background-image: url('../../assets/img/placeholder-image.svg');
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+		}
+
+		&:after {
+			content: 'Drop blocks from the sidebar to build your page';
+			display: block;
+		}
+	}
+}

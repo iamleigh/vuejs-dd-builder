@@ -1,0 +1,83 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Elements
+///
+/// Give styles to the builder elements section inside `BuilderSidebar` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-toolbox) {
+	width: 100%;
+	max-width: 320px;
+	position: absolute;
+	z-index: 200;
+	top: #{68px + $spacing-lg};
+	left: #{$spacing-lg + $sidebar-width + $spacing-sm};
+	display: none;
+	padding: $spacing-lg $spacing-md;
+	border-radius: var(--lq-border-radius-md);
+	background: var(--lq-button-contrast-background, $color-mono-dark);
+	color: $color-mono-light;
+
+	@include element(title) {
+		margin: 0 0 $spacing-xl;
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 22px;
+	}
+
+	@include element(list) {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin-bottom: $spacing-md;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+			span,
+			button {
+				display: block;
+
+				&.title {
+					margin-bottom: $spacing-sm;
+					font-size: 14px;
+					line-height: 18px;
+				}
+
+				&.content {
+					padding: $spacing-md;
+					border: 1px solid transparent;
+					border-radius: var(--lq-border-radius-sm);
+					background: $color-mono-light;
+					color: $color-mono-base;
+				}
+			}
+
+			button {
+				width: 100%;
+				outline: 1px solid var(--lq-slate-200);
+			}
+
+			&:hover {
+				span.content {
+					opacity: 0.8;
+				}
+			}
+
+			&[data-draggable='true'] {
+				cursor: move;
+			}
+		}
+	}
+
+	@include modifier(active) {
+		@include bp(min-width, md) {
+			display: block;
+		}
+	}
+}

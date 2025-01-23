@@ -1,0 +1,60 @@
+@use './utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Core
+///
+/// These are the main styles that define the basis of the project.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	@include bp(min-width, md) {
+		overflow: hidden;
+		height: 100%;
+	}
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: var(--lq-blue-50);
+
+	#app {
+		position: relative;
+
+		@include bp(min-width, md) {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}
+
+p {
+	margin: 0;
+}
+
+a {
+	font-weight: 500;
+	text-decoration: none;
+}

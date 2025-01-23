@@ -1,0 +1,33 @@
+@use '../utils/utils' as *;
+
+/// -----------------------------------------------------------------------------
+/// 🟢 Builder Top Bar
+///
+/// Give styles to the topbar section inside the `Builder Header` component.
+///
+/// @author Leighton Quito (iamleigh.com)
+/// -----------------------------------------------------------------------------
+@include block(builder-topbar) {
+	display: flex;
+	padding: $spacing-md;
+	background: var(--lq-button-contrast-background, $color-mono-dark);
+
+	@include bp(min-width, md) {
+		padding: $spacing-md $spacing-lg;
+	}
+
+	// Element: Left Content
+	@include element(left) {
+		flex: 1;
+	}
+
+	// Element: Right Content
+	@include element(right) {
+		flex: 0 0 auto;
+		margin-left: $spacing-sm;
+
+		@include bp(min-width, md) {
+			display: none;
+		}
+	}
+}
