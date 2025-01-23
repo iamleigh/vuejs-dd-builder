@@ -7,6 +7,7 @@
 	/>
 	<BlockImage
 		v-else-if="'ImageElement' === element"
+		:value="value"
 		@update:value="handleUpdate"
 	/>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<div role="figure" class="lq-front-block-image">
-		<img :src="'/assets/banner-' + image + '.webp'" :alt="alt" />
+		<img :src="value" :alt="alt" />
 	</div>
 </template>
 
@@ -10,9 +10,9 @@ const props = defineProps({
 		type: String,
 		default: 'Image without description',
 	},
-	image: {
+	value: {
 		type: String,
-		default: 'tourism',
+		required: true,
 	},
 });
 </script>

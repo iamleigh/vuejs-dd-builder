@@ -27,7 +27,7 @@ const elements = ref([
 	{
 		type: 'ImageElement',
 		label: 'Image Element',
-		value: 'noimage.png',
+		value: '/assets/banner-tourism.webp',
 		container: {
 			height: 120,
 			vPadding: 30,

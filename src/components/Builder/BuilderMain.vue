@@ -127,13 +127,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import {
-	Button,
-	InputGroup,
-	InputGroupAddon,
-	InputNumber,
-	Message,
-} from 'primevue';
+import { Button, InputGroup, InputGroupAddon, InputNumber } from 'primevue';
 import BlockMain from '../Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
 import BlockTools from '../Block/BlockTools.vue';
