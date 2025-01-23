@@ -171,7 +171,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(['change', 'update:elements']);
+const emit = defineEmits(['change']);
 
 const canvasWidth = ref(null);
 const currentItem = ref(null);
@@ -186,41 +186,32 @@ const resizeCanvas = (device) => {
 };
 
 const updateBlockValue = ({ id, value }) => {
-	const updatedElements = [...props.elements];
-	const index = updatedElements.findIndex((el) => el.id === id);
+	const index = props.elements.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {
 		// Use splice to ensure Vue's reactivity picks up the change
-		updatedElements.splice(index, 1, {
-			...updatedElements[index],
+		props.elements.splice(index, 1, {
+			...props.elements[index],
 			value,
 		});
 	}
-
-	emit('update:elements', updatedElements);
 };
 
 const updateElementValue = (index, newValue) => {
-	const updatedElements = [...props.elements];
 	props.elements.splice(index, 1, {
 		...props.elements[index],
 		value: newValue,
 	});
-
-	emit('update:elements', updatedElements);
 };
 
 const updateContainer = (index, property, newValue) => {
-	const updatedElements = [...props.elements];
-	updatedElements[index] = {
+	props.elements[index] = {
 		...props.elements[index],
 		container: {
 			...props.elements[index].container,
 			[property]: newValue,
 		},
 	};
-
-	emit('update:elements', updatedElements);
 };
 
 const moveElement = (index, position) => {
@@ -228,20 +219,17 @@ const moveElement = (index, position) => {
 		throw new Error('The position variable must be "up" or "down".');
 	}
 
-	const updatedElements = [...props.elements];
-	const totalElements = updatedElements.length;
+	const totalElements = props.elements.length;
 
 	if (1 < totalElements) {
 		if (0 < index && 'up' === position) {
-			const [item] = updatedElements.splice(index, 1);
-			updatedElements.splice(index - 1, 0, item);
+			const [item] = props.elements.splice(index, 1);
+			props.elements.splice(index - 1, 0, item);
 		} else if (totalElements - 1 > index && 'down' === position) {
-			const [item] = updatedElements.splice(index, 1);
-			updatedElements.splice(index + 1, 0, item);
+			const [item] = props.elements.splice(index, 1);
+			props.elements.splice(index + 1, 0, item);
 		}
 	}
-
-	emit('update:elements', updatedElements);
 };
 
 const editElement = () => {
@@ -257,17 +245,11 @@ const copyElement = (element, index) => {
 		container: element.container,
 	};
 
-	const updatedElements = [...props.elements];
-	updatedElements.splice(index + 1, 0, clonedElement);
-
-	emit('update:elements', updatedElements);
+	props.elements.splice(index + 1, 0, clonedElement);
 };
 
 const deleteElement = (index) => {
-	const updatedElements = [...props.elements];
-	updatedElements.splice(index, 1);
-
-	emit('update:elements', updatedElements);
+	props.elements.splice(index, 1);
 };
 
 const blurElement = (event) => {
