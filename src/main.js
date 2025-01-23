@@ -30,7 +30,7 @@ app
 			preset: BuilderTheme,
 			options: {
 				prefix: 'lq',
-				darkModeSelector: 'system',
+				darkModeSelector: false,
 				cssLayer: false,
 			},
 		},
