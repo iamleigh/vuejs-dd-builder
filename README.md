@@ -1,3 +1,6 @@
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/vuejs-dd-builder)
+![GitHub Release](https://img.shields.io/github/v/release/iamleigh/vuejs-dd-builder)
+
 # Leighton Quito
 
 VueJS Simple Page Builder Challenge
