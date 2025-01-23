@@ -241,7 +241,6 @@ const imageOptions = ref([
 </script>
 
 <style lang="scss" scope>
-@forward '../../assets/scss/ui/ui-field.scss';
 @forward '../../assets/scss/builder/builder-main';
 @forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-area';
