@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
+let canvasData = [];
+
 export const handlers = [
 	http.get('/api/elements', () => {
 		return HttpResponse.json([
@@ -29,17 +31,32 @@ export const handlers = [
 	}),
 
 	http.get('/api/canvas', () => {
-		return HttpResponse.json([]);
+		return HttpResponse.json(canvasData);
 	}),
 
-	http.put('/api/canvas', (req) => {
-		// Parse JSON body manually from req.body
-		const updatedCanvas = JSON.parse(req.body);
+	http.put('/api/canvas', async ({ request }) => {
+		const newElement = await request.json();
+		canvasData.push(newElement);
 
-		// Clear the existing array and push the new data
-		canvasData.length = 0;
-		canvasData.push(...updatedCanvas);
+		return HttpResponse.json(canvasData);
+	}),
 
-		return HttpResponse.json({ success: true });
+	http.delete('/api/canvas', async ({ request }) => {
+		const { id } = await request.json();
+		canvasData = canvasData.filter((element) => element.id !== id);
+
+		return HttpResponse.json(canvasData);
+	}),
+
+	http.patch('/api/canvas', async ({ request }) => {
+		const { id, newIndex } = await request.json();
+		const elementIndex = canvasData.findIndex((element) => element.id === id);
+
+		if (elementIndex !== -1) {
+			const [element] = canvasData.splice(elementIndex, 1);
+			canvasData.splice(newIndex, 0, element);
+		}
+
+		return HttpResponse.json(canvasData);
 	}),
 ];
