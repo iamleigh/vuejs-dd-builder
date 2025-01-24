@@ -23,9 +23,19 @@ const BuilderTheme = definePreset(Aura, {
 	},
 });
 
-const app = createApp(App);
-app
-	.use(PrimeVue, {
+async function enableMocking() {
+	if (process.env.NODE_ENV === 'development') {
+		const { worker } = await import('./mocks/browser');
+		return worker.start({
+			onUnhandledRequest: 'bypass', // Logs unhandled requests
+		});
+	}
+}
+
+enableMocking().then(() => {
+	const app = createApp(App);
+
+	app.use(PrimeVue, {
 		theme: {
 			preset: BuilderTheme,
 			options: {
@@ -34,5 +44,7 @@ app
 				cssLayer: false,
 			},
 		},
-	})
-	.mount('#app');
+	});
+
+	app.mount('#app');
+});
