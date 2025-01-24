@@ -275,7 +275,13 @@ const copyElement = (element, index) => {
 	elements.value.splice(index + 1, 0, clonedElement);
 };
 
-const deleteElement = (index) => elements.value.splice(index, 1);
+const deleteElement = (element) => {
+	const index = elements.value.findIndex((el) => el.id === element.id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1);
+	}
+};
 
 const blurElement = (event) => {
 	// Check if focus remains within the current element
