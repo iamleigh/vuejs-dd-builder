@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Button, InputGroup, InputGroupAddon, InputNumber } from 'primevue';
 import BlockMain from '../Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
@@ -162,14 +162,6 @@ import BlockTools from '../Block/BlockTools.vue';
 import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
 import FieldGroup from '../Field/FieldGroup.vue';
 import FieldItem from '../Field/FieldItem.vue';
-
-const props = defineProps({
-	elements: {
-		type: Array,
-		default: null,
-		required: true,
-	},
-});
 
 const emit = defineEmits(['change']);
 
@@ -181,15 +173,60 @@ const resizeCanvas = (device) => {
 	canvasWidth.value = 'desktop' === device ? null : device;
 };
 
+// Create a reactive reference for the API/canvas data
+const apiCanvasData = ref([]);
+
+// Watch changes on the API/canvas data and update the elements list
+watch(apiCanvasData, (newData) => {
+	elements.value = newData;
+});
+
+// Watch changes on the elements list and update the API/canvas data
+watch(apiCanvasData, (newElements) => {
+	apiCanvasData.value = newElements;
+});
+
+// Simulate fetching data from the API
+function fetchApiCanvasData() {
+	// Replace this with your actual API call
+	apiCanvasData.value = [
+		// Example data
+		{
+			id: 1,
+			name: 'Element 1',
+			type: 'ImageElement',
+			container: {
+				height: 100,
+				vPadding: 10,
+				hPadding: 10,
+				background: '#fff',
+			},
+			value: '/assets/banner-food.jpg',
+		},
+		{
+			id: 2,
+			name: 'Element 2',
+			type: 'TextElement',
+			container: { height: 50, vPadding: 5, hPadding: 5, background: '#eee' },
+			value: 'Sample Text',
+		},
+	];
+}
+
+// Fetch the initial data
+fetchApiCanvasData();
+
+const elements = ref(apiCanvasData.value);
+
 const updateElement = (index, newProperties) => {
-	props.elements.splice(index, 1, {
-		...props.elements[index],
+	elements.value.splice(index, 1, {
+		...elements.value[index],
 		...newProperties,
 	});
 };
 
 const updateBlockValue = ({ id, value }) => {
-	const index = props.elements.findIndex((el) => el.id === id);
+	const index = elements.value.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {
 		updateElement(index, { value });
@@ -202,7 +239,7 @@ const updateElementValue = (index, newValue) => {
 
 const updateContainer = (index, property, newValue) => {
 	const newContainer = {
-		...props.elements[index].container,
+		...elements.value[index].container,
 		[property]: newValue,
 	};
 
@@ -214,14 +251,15 @@ const moveElement = (index, position) => {
 		throw new Error('The position variable must be "up" or "down".');
 	}
 
-	const totalElements = props.elements.length;
+	const totalElements = elements.value.length;
 
 	if (1 < totalElements) {
 		const newIndex = 'up' === position ? index - 1 : index + 1;
 
 		if (0 <= newIndex && newIndex < totalElements) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(newIndex, 0, item);
+			const temp = elements.value[newIndex];
+			elements.value[newIndex] = elements.value[index];
+			elements.value[index] = temp;
 		}
 	}
 };
@@ -234,10 +272,10 @@ const copyElement = (element, index) => {
 		id: Date.now(),
 	};
 
-	props.elements.splice(index + 1, 0, clonedElement);
+	elements.value.splice(index + 1, 0, clonedElement);
 };
 
-const deleteElement = (index) => props.elements.splice(index, 1);
+const deleteElement = (index) => elements.value.splice(index, 1);
 
 const blurElement = (event) => {
 	// Check if focus remains within the current element
