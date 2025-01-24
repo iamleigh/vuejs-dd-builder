@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { asyncLoadComponent } from './utils/asyncLoadComponent';
 import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
@@ -31,29 +31,21 @@ const dialogElements = ref(false);
 const showToolbox = ref(false);
 
 // List of predefined elements
-const elements = ref([
-	{
-		type: 'TextElement',
-		label: 'Text Element',
-		value: 'The quick brown fox jumps over the lazy dog.',
-		container: {
-			vPadding: 30,
-			hPadding: 30,
-			background: '#fff',
-		},
-	},
-	{
-		type: 'ImageElement',
-		label: 'Image Element',
-		value: '/assets/banner-tourism.webp',
-		container: {
-			height: 240,
-			vPadding: 30,
-			hPadding: 30,
-			background: '#fff',
-		},
-	},
-]);
+const elements = ref([]);
+
+const fetchElements = async () => {
+	try {
+		const response = await fetch('/api/elements');
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch elements: ${response.status}`);
+		}
+
+		elements.value = await response.json();
+	} catch (error) {
+		console.error('Error fetching elements:', error);
+	}
+};
 
 // List of elements added to the canvas (drop-zone)
 const droppedElements = ref([]);
@@ -111,6 +103,12 @@ const simulateLoadingDelay = (time) => {
 	setTimeout(() => (doneLoading.value = true), time + 500);
 	setTimeout(() => (hideLoadingMask.value = true), time + 1000);
 };
+
+// Start: Fetch elements and simulate loading
+onMounted(async () => {
+	await fetchElements();
+	simulateLoadingDelay(1000);
+});
 
 // Start: Simulate loading process
 simulateLoadingDelay(1000);
