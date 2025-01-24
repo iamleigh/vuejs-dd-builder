@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { Button, InputGroup, InputGroupAddon, InputNumber } from 'primevue';
 import BlockMain from '../Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
@@ -175,54 +175,62 @@ const resizeCanvas = (device) => {
 
 // Create a reactive reference for the API/canvas data
 const apiCanvasData = ref([]);
-
-// Watch changes on the API/canvas data and update the elements list
-watch(apiCanvasData, (newData) => {
-	elements.value = newData;
-});
-
-// Watch changes on the elements list and update the API/canvas data
-watch(apiCanvasData, (newElements) => {
-	apiCanvasData.value = newElements;
-});
-
-// Simulate fetching data from the API
-function fetchApiCanvasData() {
-	// Replace this with your actual API call
-	apiCanvasData.value = [
-		// Example data
-		{
-			id: 1,
-			name: 'Element 1',
-			type: 'ImageElement',
-			container: {
-				height: 100,
-				vPadding: 10,
-				hPadding: 10,
-				background: '#fff',
-			},
-			value: '/assets/banner-food.jpg',
-		},
-		{
-			id: 2,
-			name: 'Element 2',
-			type: 'TextElement',
-			container: { height: 50, vPadding: 5, hPadding: 5, background: '#eee' },
-			value: 'Sample Text',
-		},
-	];
-}
-
-// Fetch the initial data
-fetchApiCanvasData();
-
 const elements = ref(apiCanvasData.value);
+
+// Fetch data from API/canvas
+const fetchApiCanvasData = async () => {
+	try {
+		const response = await fetch('/api/canvas');
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch canvas data: ${response.status}`);
+		}
+
+		const data = await response.json();
+		apiCanvasData.value = data;
+	} catch (error) {
+		console.error('Error fetching canvas data:', error);
+	}
+};
+
+const updateApiCanvasData = async () => {
+	try {
+		await fetch('/api/canvas', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(apiCanvasData.value),
+		});
+
+		// Log successful update
+		const response = await fetch('/api/canvas');
+		if (!response.ok) {
+			throw new Error(
+				`Failed to fetch updated canvas data: ${response.status}`,
+			);
+		}
+
+		const updatedData = await response.json();
+		console.log('Updated canvas data from API:', updatedData); // DEBUG
+	} catch (error) {
+		console.error('Error updating canvas data:', error);
+	}
+};
+
+onMounted(async () => {
+	// Fetch the initial data from the API/canvas
+	await fetchApiCanvasData();
+});
+
+// Watch changes on the API/canvas data and update the API
+watch(apiCanvasData, updateApiCanvasData, { deep: true });
 
 const updateElement = (index, newProperties) => {
 	elements.value.splice(index, 1, {
 		...elements.value[index],
 		...newProperties,
 	});
+
+	updateApiCanvasData();
 };
 
 const updateBlockValue = ({ id, value }) => {
