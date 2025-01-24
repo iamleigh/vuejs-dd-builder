@@ -50,6 +50,20 @@ const fetchElements = async () => {
 // List of elements added to the canvas (drop-zone)
 const droppedElements = ref([]);
 
+const fetchDroppedElements = async () => {
+	try {
+		const response = await fetch('/api/canvas');
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch elements: ${response.status}`);
+		}
+
+		droppedElements.value = await response.json();
+	} catch (error) {
+		console.error('Error fetching elements:', error);
+	}
+};
+
 // Func: Toggle menubar visibility
 const toggleSidebar = () => (openMenubar.value = !openMenubar.value);
 
@@ -107,11 +121,11 @@ const simulateLoadingDelay = (time) => {
 // Start: Fetch elements and simulate loading
 onMounted(async () => {
 	await fetchElements();
+	await fetchDroppedElements();
+
+	// Start: Simulate loading process
 	simulateLoadingDelay(1000);
 });
-
-// Start: Simulate loading process
-simulateLoadingDelay(1000);
 </script>
 
 <template>
