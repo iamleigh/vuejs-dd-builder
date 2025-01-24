@@ -31,4 +31,15 @@ export const handlers = [
 	http.get('/api/canvas', () => {
 		return HttpResponse.json([]);
 	}),
+
+	http.put('/api/canvas', (req) => {
+		// Parse JSON body manually from req.body
+		const updatedCanvas = JSON.parse(req.body);
+
+		// Clear the existing array and push the new data
+		canvasData.length = 0;
+		canvasData.push(...updatedCanvas);
+
+		return HttpResponse.json({ success: true });
+	}),
 ];
