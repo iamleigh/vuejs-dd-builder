@@ -118,17 +118,37 @@ const addElementClick = async (element) => {
 
 // Func: Export elements added to the canvas
 const exportElements = () => {
-	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
-	const blob = new Blob([jsonContent], { type: 'application/json' });
-	const url = URL.createObjectURL(blob);
+	const request = new Request('/api/canvas', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
-	const link = document.createElement('a');
-	link.href = url;
-	link.download = 'content.json';
-	link.click();
+	fetch(request)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`Failed to fetch elements: ${response.status}`);
+			}
 
-	console.log(jsonContent); // Project Requirement: Log the JSON file to the console.
-	URL.revokeObjectURL(url); // Project Requirement: Download JSON file.
+			return response.json();
+		})
+		.then((data) => {
+			const jsonContent = JSON.stringify(data, null, 2);
+			const blob = new Blob([jsonContent], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = 'content.json';
+			link.click();
+
+			console.log(jsonContent); // Project Requirement: Log the JSON file to the console.
+			URL.revokeObjectURL(url); // Project Requirement: Download JSON file.
+		})
+		.catch((error) => {
+			console.log('Error exporting elements:', error);
+		});
 };
 
 // Func: Simulate loading
