@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { Button, InputGroup, InputGroupAddon, InputNumber } from 'primevue';
 import BlockMain from '../Block/BlockMain.vue';
 import draggableComponent from 'vuedraggable';
@@ -176,22 +176,6 @@ const resizeCanvas = (device) => {
 // Create a reactive reference for the API/canvas data
 const apiCanvasData = ref([]);
 const elements = ref(apiCanvasData.value);
-
-// Fetch data from API/canvas
-const fetchApiCanvasData = async () => {
-	try {
-		const response = await fetch('/api/canvas');
-
-		if (!response.ok) {
-			throw new Error(`Failed to fetch canvas data: ${response.status}`);
-		}
-
-		const data = await response.json();
-		apiCanvasData.value = data;
-	} catch (error) {
-		console.error('Error fetching canvas data:', error);
-	}
-};
 
 const updateApiCanvasData = async () => {
 	try {
@@ -215,11 +199,6 @@ const updateApiCanvasData = async () => {
 		console.error('Error updating canvas data:', error);
 	}
 };
-
-onMounted(async () => {
-	// Fetch the initial data from the API/canvas
-	await fetchApiCanvasData();
-});
 
 // Watch changes on the API/canvas data and update the API
 watch(apiCanvasData, updateApiCanvasData, { deep: true });
