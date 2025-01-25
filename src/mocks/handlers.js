@@ -35,8 +35,10 @@ export const handlers = [
 	}),
 
 	http.put('/api/canvas', async ({ request }) => {
-		const newElement = await request.json();
-		canvasData.push(newElement);
+		const baseElement = await request.json();
+		const clonedElement = { id: Date.now(), ...baseElement };
+
+		canvasData.push(clonedElement);
 
 		return HttpResponse.json(canvasData);
 	}),
