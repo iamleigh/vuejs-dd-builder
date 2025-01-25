@@ -178,26 +178,28 @@ const apiCanvasData = ref([]);
 const elements = ref(apiCanvasData.value);
 
 const updateApiCanvasData = async () => {
-	try {
-		await fetch('/api/canvas', {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(apiCanvasData.value),
+	const request = new Request('/api/canvas', {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(apiCanvasData.value),
+	});
+
+	await fetch(request)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`Failed to fetch elements: ${response.status}`);
+			}
+
+			return response.json();
+		})
+		.then((data) => {
+			console.log('Updated canvas:', data); // DEBUG
+		})
+		.catch((error) => {
+			console.error('Error updating canvas data:', error);
 		});
-
-		// Log successful update
-		const response = await fetch('/api/canvas');
-		if (!response.ok) {
-			throw new Error(
-				`Failed to fetch updated canvas data: ${response.status}`,
-			);
-		}
-
-		const updatedData = await response.json();
-		console.log('Updated canvas data from API:', updatedData); // DEBUG
-	} catch (error) {
-		console.error('Error updating canvas data:', error);
-	}
 };
 
 // Watch changes on the API/canvas data and update the API
