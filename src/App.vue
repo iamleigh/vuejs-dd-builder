@@ -90,10 +90,30 @@ const cloneElement = (element) => {
 };
 
 // Func: Add new element on click
-const addElementClick = (element) => {
-	droppedElements.value.push(cloneElement(element));
-	openMenubar.value = false;
-	dialogElements.value = false;
+const addElementClick = async (element) => {
+	const request = new Request('/api/canvas', {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(element),
+	});
+
+	await fetch(request)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`Failed to fetch elements: ${response.status}`);
+			}
+
+			return response.json();
+		})
+		.then(() => {
+			openMenubar.value = false;
+			dialogElements.value = false;
+		})
+		.catch((error) => {
+			console.error('Error adding element:', error);
+		});
 };
 
 // Func: Export elements added to the canvas
