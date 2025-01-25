@@ -211,7 +211,7 @@ const updateElement = (index, newProperties) => {
 		...newProperties,
 	});
 
-	updateApiCanvasData();
+	// updateApiCanvasData();
 };
 
 const updateBlockValue = ({ id, value }) => {
