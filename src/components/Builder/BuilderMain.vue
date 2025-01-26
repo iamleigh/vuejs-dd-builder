@@ -50,13 +50,12 @@ import draggableComponent from 'vuedraggable';
 import UIDevices from '@admin/UI/UIDevices.vue';
 
 const elements = ref([]);
-const droppedElements = ref([]);
 const device = ref('desktop');
 
 const fetchCanvasData = async () => {
 	try {
 		const response = await axios.get('/api/canvas');
-		droppedElements.value = response.data;
+		elements.value = response.data;
 	} catch (error) {
 		console.log('Failed to fetch canvas data:', error);
 	}
@@ -64,11 +63,8 @@ const fetchCanvasData = async () => {
 
 const syncCanvas = async () => {
 	try {
-		const response = await axios.put(
-			'/api/canvas',
-			toRaw(droppedElements.value),
-		);
-		droppedElements.value = response.data;
+		const response = await axios.put('/api/canvas', toRaw(elements.value));
+		elements.value = response.data;
 	} catch (error) {
 		console.log('Failed to sync canvas data:', error);
 	}
@@ -76,9 +72,7 @@ const syncCanvas = async () => {
 
 const addElement = async (el) => {
 	const baseElements = toRaw(el);
-	droppedElements.value = Array.isArray(baseElements)
-		? baseElements
-		: [baseElements];
+	elements.value = Array.isArray(baseElements) ? baseElements : [baseElements];
 
 	await syncCanvas();
 };
