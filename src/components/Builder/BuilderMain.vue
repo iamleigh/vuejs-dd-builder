@@ -39,7 +39,15 @@
 							:edit="() => editElement(element)"
 							:is-editing="editing"
 							:settings-title="element.label"
-						/>
+						>
+							<template #settings>
+								<SettingsContainer
+									:properties="element.container"
+									:showHeight="'ImageElement' === element.type"
+									:showPadding="true"
+								/>
+							</template>
+						</BlockTools>
 
 						<BlockMain
 							:id="element.id"
@@ -78,6 +86,7 @@ import draggableComponent from 'vuedraggable';
 import BlockMain from '../Block/BlockMain.vue';
 import BlockTools from '../Block/BlockTools.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
+import SettingsContainer from '@admin/Settings/SettingsContainer.vue';
 
 const props = defineProps({
 	addedElement: {
