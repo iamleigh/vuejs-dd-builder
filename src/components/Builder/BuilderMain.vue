@@ -30,6 +30,7 @@
 							class="leighton-quito-builder-item__toolbar"
 							:is-first-item="0 === index"
 							:is-last-item="elements.length - 1 === index"
+							:copy="() => copyElement(element, index)"
 						/>
 
 						<BlockMain
@@ -115,6 +116,17 @@ const updateElement = ({ id, value }) => {
 			...{ value: value },
 		});
 	}
+
+	updateCanvas(elements.value);
+};
+
+const copyElement = (element, index) => {
+	const clonedElement = {
+		...element,
+		id: Date.now(),
+	};
+
+	elements.value.splice(index + 1, 0, clonedElement);
 
 	updateCanvas(elements.value);
 };
