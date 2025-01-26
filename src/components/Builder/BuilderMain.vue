@@ -44,10 +44,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref, toRaw, watch } from 'vue';
 import axios from 'axios';
 import draggableComponent from 'vuedraggable';
 import UIDevices from '@admin/UI/UIDevices.vue';
+
+const props = defineProps({
+	addedElement: {
+		type: Object,
+		default: () => ({}),
+	},
+});
 
 const elements = ref([]);
 const device = ref('desktop');
@@ -80,6 +87,17 @@ const addElement = async (el) => {
 const resizeCanvas = (d) => (device.value = d);
 
 onMounted(fetchCanvasData);
+
+watch(
+	() => props.addedElement,
+	(el) => {
+		if (Object.hasOwn(el, 'id')) {
+			elements.value = [...elements.value, el];
+			addElement(elements.value);
+		}
+	},
+	{ deep: true },
+);
 </script>
 
 <style lang="scss" scope>

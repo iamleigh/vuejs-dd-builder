@@ -32,6 +32,7 @@ const showToolbox = ref(false);
 
 // List of predefined elements
 const elements = ref([]);
+const addedElement = ref({});
 
 const fetchElements = async () => {
 	try {
@@ -73,30 +74,10 @@ const cloneElement = (element) => {
 };
 
 // Func: Add new element on click
-const addElementClick = async (element) => {
-	const request = new Request('/api/canvas', {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(element),
-	});
-
-	await fetch(request)
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error(`Failed to fetch elements: ${response.status}`);
-			}
-
-			return response.json();
-		})
-		.then(() => {
-			openMenubar.value = false;
-			dialogElements.value = false;
-		})
-		.catch((error) => {
-			console.error('Error adding element:', error);
-		});
+const addElementClick = (element) => {
+	addedElement.value = cloneElement(element);
+	dialogElements.value = false; // Close "add element" dialog
+	openMenubar.value = false; // Close mobiles menu bar
 };
 
 // Func: Export elements added to the canvas
@@ -178,7 +159,7 @@ onMounted(async () => {
 		:clone="cloneElement"
 	/>
 
-	<BuilderMain @change="dropZoneChange" />
+	<BuilderMain @change="dropZoneChange" :addedElement="addedElement" />
 
 	<Dialog
 		v-model:visible="dialogElements"
