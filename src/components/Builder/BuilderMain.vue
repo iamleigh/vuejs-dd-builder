@@ -24,6 +24,8 @@
 						tabIndex="0"
 						@mouseover="current = index"
 						@mouseleave="current = null"
+						@focus="current = index"
+						@blur="current = null"
 					>
 						<BlockTools
 							v-if="current === index"
