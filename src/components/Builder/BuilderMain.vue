@@ -34,7 +34,9 @@
 									'px',
 								background: element.container.background,
 							}"
+							:height="element.container.height"
 							@update:value="updateElement"
+							@update:height="updateElement"
 						/>
 					</div>
 				</template>
