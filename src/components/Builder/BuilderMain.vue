@@ -46,6 +46,17 @@
 									:showHeight="'ImageElement' === element.type"
 									:showPadding="true"
 								/>
+
+								<FieldGroup
+									v-if="'ImageElement' === element.type"
+									title="Default Image"
+								>
+									<UIRadioImageGroup
+										:group="element.id"
+										:options="defaultImages"
+										:default-option="element.value"
+									/>
+								</FieldGroup>
 							</template>
 						</BlockTools>
 
@@ -85,6 +96,8 @@ import axios from 'axios';
 import draggableComponent from 'vuedraggable';
 import BlockMain from '../Block/BlockMain.vue';
 import BlockTools from '../Block/BlockTools.vue';
+import FieldGroup from '../Field/FieldGroup.vue';
+import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
 import SettingsContainer from '@admin/Settings/SettingsContainer.vue';
 
@@ -99,6 +112,25 @@ const elements = ref([]);
 const device = ref('desktop');
 const current = ref(null);
 const editing = ref(false);
+
+const defaultImages = ref([
+	{
+		label: 'Food',
+		value: '/assets/banner-food.webp',
+	},
+	{
+		label: 'Tourism',
+		value: '/assets/banner-tourism.webp',
+	},
+	{
+		label: 'Medicine',
+		value: '/assets/banner-medicine.webp',
+	},
+	{
+		label: 'Architecture',
+		value: '/assets/banner-architecture.webp',
+	},
+]);
 
 const fetchCanvasData = async () => {
 	try {
