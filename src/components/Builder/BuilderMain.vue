@@ -22,13 +22,20 @@
 						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
 					>
-						<div v-if="'TextElement' === element.type">
-							<p>I am a TEXT element</p>
-						</div>
-
-						<div v-else-if="'ImageElement' === element.type">
-							<p>I am an IMAGE element</p>
-						</div>
+						<BlockMain
+							:id="element.id"
+							:element="element.type"
+							:value="element.value"
+							:style="{
+								padding:
+									element.container.vPadding +
+									'px ' +
+									element.container.hPadding +
+									'px',
+								background: element.container.background,
+							}"
+							@update:value="updateElement"
+						/>
 					</div>
 				</template>
 			</draggable-component>
@@ -47,6 +54,7 @@
 import { onMounted, ref, toRaw, watch } from 'vue';
 import axios from 'axios';
 import draggableComponent from 'vuedraggable';
+import BlockMain from '../Block/BlockMain.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
 
 const props = defineProps({
@@ -82,6 +90,19 @@ const addElement = async (el) => {
 	elements.value = Array.isArray(baseElements) ? baseElements : [baseElements];
 
 	await syncCanvas();
+};
+
+const updateElement = ({ id, value }) => {
+	const index = elements.value.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1, {
+			...elements.value[index],
+			...{ value: value },
+		});
+	}
+
+	addElement(elements.value);
 };
 
 const resizeCanvas = (d) => (device.value = d);
