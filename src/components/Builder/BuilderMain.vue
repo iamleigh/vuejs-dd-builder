@@ -30,6 +30,8 @@
 							class="leighton-quito-builder-item__toolbar"
 							:is-first-item="0 === index"
 							:is-last-item="elements.length - 1 === index"
+							:move-up="() => moveElement(index, 'up')"
+							:move-down="() => moveElement(index, 'down')"
 							:copy="() => copyElement(element, index)"
 							:remove="() => deleteElement(element)"
 						/>
@@ -137,6 +139,26 @@ const deleteElement = (element) => {
 
 	if (-1 !== index) {
 		elements.value.splice(index, 1);
+	}
+
+	updateCanvas(elements.value);
+};
+
+const moveElement = (index, position) => {
+	if ('up' !== position && 'down' !== position) {
+		throw new Error('The position variable must be "up" or "down".');
+	}
+
+	const totalElements = elements.value.length;
+
+	if (1 < totalElements) {
+		const newIndex = 'up' === position ? index - 1 : index + 1;
+
+		if (0 <= newIndex && newIndex < totalElements) {
+			const temp = elements.value[newIndex];
+			elements.value[newIndex] = elements.value[index];
+			elements.value[index] = temp;
+		}
 	}
 
 	updateCanvas(elements.value);
