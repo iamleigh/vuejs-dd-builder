@@ -23,9 +23,9 @@
 						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
 						@mouseover="current = index"
-						@mouseleave="current = null"
+						@mouseleave="blurElement"
 						@focus="current = index"
-						@blur="current = null"
+						@blur="blurElement"
 					>
 						<BlockTools
 							v-if="current === index"
@@ -36,6 +36,9 @@
 							:move-down="() => moveElement(index, 'down')"
 							:copy="() => copyElement(element, index)"
 							:remove="() => deleteElement(element)"
+							:edit="() => editElement(element)"
+							:is-editing="editing"
+							:settings-title="element.label"
 						/>
 
 						<BlockMain
@@ -86,6 +89,7 @@ const props = defineProps({
 const elements = ref([]);
 const device = ref('desktop');
 const current = ref(null);
+const editing = ref(false);
 
 const fetchCanvasData = async () => {
 	try {
@@ -164,6 +168,19 @@ const moveElement = (index, position) => {
 	}
 
 	updateCanvas(elements.value);
+};
+
+const editElement = () => (editing.value = !editing.value);
+
+const blurElement = (e) => {
+	// Check if focus remains within the current element
+	if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) {
+		return;
+	}
+
+	// Otherwise, reset the state
+	current.value = null;
+	editing.value = false;
 };
 
 const resizeCanvas = (d) => (device.value = d);
