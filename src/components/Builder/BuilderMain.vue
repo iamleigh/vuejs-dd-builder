@@ -31,6 +31,7 @@
 							:is-first-item="0 === index"
 							:is-last-item="elements.length - 1 === index"
 							:copy="() => copyElement(element, index)"
+							:remove="() => deleteElement(element)"
 						/>
 
 						<BlockMain
@@ -127,6 +128,16 @@ const copyElement = (element, index) => {
 	};
 
 	elements.value.splice(index + 1, 0, clonedElement);
+
+	updateCanvas(elements.value);
+};
+
+const deleteElement = (element) => {
+	const index = elements.value.findIndex((el) => el.id === element.id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1);
+	}
 
 	updateCanvas(elements.value);
 };
