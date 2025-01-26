@@ -13,7 +13,8 @@
 				group="blocks"
 				handle=".handle"
 				item-key="id"
-				@add="addElement(elements)"
+				@add="updateCanvas(elements)"
+				@sort="updateCanvas(elements)"
 				@change="$emit('change')"
 			>
 				<template #item="{ element, index }">
@@ -21,7 +22,16 @@
 						:key="'element-' + index"
 						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
+						@mouseover="current = index"
+						@mouseleave="current = null"
 					>
+						<BlockTools
+							v-if="current === index"
+							class="leighton-quito-builder-item__toolbar"
+							:is-first-item="0 === index"
+							:is-last-item="elements.length - 1 === index"
+						/>
+
 						<BlockMain
 							:id="element.id"
 							:element="element.type"
@@ -57,6 +67,7 @@ import { onMounted, ref, toRaw, watch } from 'vue';
 import axios from 'axios';
 import draggableComponent from 'vuedraggable';
 import BlockMain from '../Block/BlockMain.vue';
+import BlockTools from '../Block/BlockTools.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
 
 const props = defineProps({
@@ -68,6 +79,7 @@ const props = defineProps({
 
 const elements = ref([]);
 const device = ref('desktop');
+const current = ref(null);
 
 const fetchCanvasData = async () => {
 	try {
@@ -87,7 +99,7 @@ const syncCanvas = async () => {
 	}
 };
 
-const addElement = async (el) => {
+const updateCanvas = async (el) => {
 	const baseElements = toRaw(el);
 	elements.value = Array.isArray(baseElements) ? baseElements : [baseElements];
 
@@ -104,7 +116,7 @@ const updateElement = ({ id, value }) => {
 		});
 	}
 
-	addElement(elements.value);
+	updateCanvas(elements.value);
 };
 
 const resizeCanvas = (d) => (device.value = d);
@@ -116,7 +128,7 @@ watch(
 	(el) => {
 		if (Object.hasOwn(el, 'id')) {
 			elements.value = [...elements.value, el];
-			addElement(elements.value);
+			updateCanvas(elements.value);
 		}
 	},
 	{ deep: true },
