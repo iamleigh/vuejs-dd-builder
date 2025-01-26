@@ -35,14 +35,12 @@ export const handlers = [
 	}),
 
 	http.put('/api/canvas', async ({ request }) => {
-		const baseElement = await request.json();
+		const elements = await request.json();
 
-		const clonedElement = {
-			id: baseElement.id || Date.now(),
-			...baseElement,
-		};
-
-		canvasData.push(clonedElement);
+		canvasData = elements.map((el) => ({
+			id: el.id || Date.now(),
+			...el,
+		}));
 
 		return HttpResponse.json(canvasData);
 	}),
