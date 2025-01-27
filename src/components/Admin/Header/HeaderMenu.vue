@@ -1,32 +1,35 @@
 <template>
-	<aside class="leighton-quito-builder-sidebar">
+	<div
+		role="menubar"
+		class="leighton-quito-builder-menubar"
+		:class="{ 'leighton-quito-builder-menubar--active': openSidebar }"
+	>
 		<Button
-			class="leighton-quito-builder-sidebar__button"
-			icon="pi pi-plus"
+			role="menuitem"
 			aria-label="Add Element"
-			:selected="openToolbox"
-			:aria-selected="openToolbox"
-			:severity="openToolbox ? 'primary' : 'contrast'"
+			icon="pi pi-plus"
+			severity="contrast"
 			@click="$emit('add-element')"
 		/>
 
 		<Button
-			class="leighton-quito-builder-sidebar__button"
-			icon="pi pi-download"
+			role="menuitem"
 			aria-label="Download"
+			icon="pi pi-download"
 			severity="contrast"
 			@click="$emit('download')"
 		/>
-	</aside>
+	</div>
 </template>
 
 <script setup>
 import { Button } from 'primevue';
 
 defineProps({
-	openToolbox: {
+	openSidebar: {
 		type: Boolean,
 		default: false,
+		required: true,
 	},
 });
 
@@ -34,5 +37,5 @@ defineEmits(['add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-sidebar';
+@forward '../../../assets/scss/builder/builder-menubar';
 </style>

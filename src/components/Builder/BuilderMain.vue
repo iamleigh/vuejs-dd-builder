@@ -2,93 +2,52 @@
 	<main class="leighton-quito-builder-main">
 		<div
 			class="leighton-quito-builder-main__canvas"
-			:class="'leighton-quito-builder-main__canvas--' + canvasWidth"
+			:class="{
+				'leighton-quito-builder-main__canvas--tablet': 'tablet' === device,
+				'leighton-quito-builder-main__canvas--mobile': 'mobile' === device,
+			}"
 		>
-			<draggableComponent
+			<draggable-component
 				class="leighton-quito-builder-area lq-front-page"
 				:list="elements"
 				group="blocks"
 				handle=".handle"
 				item-key="id"
+				@add="updateCanvas(elements)"
+				@sort="updateCanvas(elements)"
 				@change="$emit('change')"
 			>
 				<template #item="{ element, index }">
 					<div
-						:key="index"
+						:key="'element-' + index"
 						class="leighton-quito-builder-item leighton-quito-builder-item--with-toolbar"
 						tabIndex="0"
-						@mouseover="currentItem = index"
+						@mouseover="current = index"
 						@mouseleave="blurElement"
-						@focus="currentItem = index"
+						@focus="current = index"
 						@blur="blurElement"
 					>
 						<BlockTools
-							v-if="currentItem === index"
+							v-if="current === index"
 							class="leighton-quito-builder-item__toolbar"
 							:is-first-item="0 === index"
 							:is-last-item="elements.length - 1 === index"
-							:is-editing="editPopup"
 							:move-up="() => moveElement(index, 'up')"
 							:move-down="() => moveElement(index, 'down')"
-							:edit="() => editElement(element)"
 							:copy="() => copyElement(element, index)"
 							:remove="() => deleteElement(element)"
+							:edit="() => editElement(element)"
+							:is-editing="editing"
 							:settings-title="element.label"
 						>
 							<template #settings>
-								<FieldGroup title="Container">
-									<FieldItem
-										v-if="'ImageElement' === element.type"
-										title="Height"
-									>
-										<InputGroup>
-											<InputNumber
-												v-model="element.container.height"
-												:min="0"
-												@change="
-													updateContainer(
-														index,
-														'height',
-														element.container.height,
-													)
-												"
-											/>
-											<InputGroupAddon>px</InputGroupAddon>
-										</InputGroup>
-									</FieldItem>
-
-									<FieldItem title="Vertical Padding">
-										<InputGroup>
-											<InputNumber
-												v-model="element.container.vPadding"
-												@change="
-													updateContainer(
-														index,
-														'vPadding',
-														element.container.vPadding,
-													)
-												"
-											/>
-											<InputGroupAddon>px</InputGroupAddon>
-										</InputGroup>
-									</FieldItem>
-
-									<FieldItem title="Horizontal Padding">
-										<InputGroup>
-											<InputNumber
-												v-model="element.container.hPadding"
-												@change="
-													updateContainer(
-														index,
-														'hPadding',
-														element.container.hPadding,
-													)
-												"
-											/>
-											<InputGroupAddon>px</InputGroupAddon>
-										</InputGroup>
-									</FieldItem>
-								</FieldGroup>
+								<SettingsContainer
+									:id="element.id"
+									v-model:properties="element.container"
+									:show-height="'ImageElement' === element.type"
+									:show-padding="true"
+									@update:properties="updateContainer"
+								/>
 
 								<FieldGroup
 									v-if="'ImageElement' === element.type"
@@ -96,9 +55,9 @@
 								>
 									<UIRadioImageGroup
 										:group="element.id"
-										:options="imageOptions"
+										:options="defaultImages"
 										:default-option="element.value"
-										@update="(value) => updateElementValue(index, value)"
+										@update="(value) => updateImage(index, value)"
 									/>
 								</FieldGroup>
 							</template>
@@ -117,156 +76,49 @@
 								background: element.container.background,
 							}"
 							:height="element.container.height"
-							@update:value="updateBlockValue"
-							@update:height="updateBlockValue"
+							@update:value="updateElement"
+							@update:height="updateElement"
 						/>
 					</div>
 				</template>
-			</draggableComponent>
+			</draggable-component>
 		</div>
 
-		<aside class="leighton-quito-builder-devices" aria-label="Device Selection">
-			<Button
-				aria-label="Desktop View"
-				icon="pi pi-desktop"
-				class="leighton-quito-builder-devices__item"
-				:disabled="!canvasWidth ? true : false"
-				@click="resizeCanvas('desktop')"
-			/>
-
-			<Button
-				aria-label="Tablet View"
-				icon="pi pi-tablet"
-				class="leighton-quito-builder-devices__item"
-				:disabled="'tablet' === canvasWidth ? true : false"
-				@click="resizeCanvas('tablet')"
-			/>
-
-			<Button
-				aria-label="Mobile View"
-				icon="pi pi-mobile"
-				class="leighton-quito-builder-devices__item"
-				:disabled="'mobile' === canvasWidth ? true : false"
-				@click="resizeCanvas('mobile')"
-			/>
-		</aside>
+		<UIDevices
+			:selected="device"
+			@resize-desktop="resizeCanvas('desktop')"
+			@resize-tablet="resizeCanvas('tablet')"
+			@resize-mobile="resizeCanvas('mobile')"
+		/>
 	</main>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Button, InputGroup, InputGroupAddon, InputNumber } from 'primevue';
-import BlockMain from '../Block/BlockMain.vue';
+import { onMounted, ref, toRaw, watch } from 'vue';
+import axios from 'axios';
 import draggableComponent from 'vuedraggable';
+import BlockMain from '../Block/BlockMain.vue';
 import BlockTools from '../Block/BlockTools.vue';
-import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
 import FieldGroup from '../Field/FieldGroup.vue';
-import FieldItem from '../Field/FieldItem.vue';
+import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
+import UIDevices from '@admin/UI/UIDevices.vue';
+import SettingsContainer from '@admin/Settings/SettingsContainer.vue';
 
 const props = defineProps({
-	elements: {
-		type: Array,
-		default: null,
-		required: true,
+	addedElement: {
+		type: Object,
+		default: () => ({}),
 	},
 });
 
-const emit = defineEmits(['change']);
+defineEmits(['change']);
 
-const canvasWidth = ref(null);
-const currentItem = ref(null);
-const editPopup = ref(false);
+const elements = ref([]);
+const device = ref('desktop');
+const current = ref(null);
+const editing = ref(false);
 
-const resizeCanvas = (device) => {
-	if ('desktop' === device) {
-		canvasWidth.value = null;
-	} else {
-		canvasWidth.value = device;
-	}
-};
-
-const updateBlockValue = ({ id, value }) => {
-	const index = props.elements.findIndex((el) => el.id === id);
-
-	if (-1 !== index) {
-		// Use splice to ensure Vue's reactivity picks up the change
-		props.elements.splice(index, 1, {
-			...props.elements[index],
-			value,
-		});
-	}
-};
-
-const updateElementValue = (index, newValue) => {
-	props.elements.splice(index, 1, {
-		...props.elements[index],
-		value: newValue,
-	});
-};
-
-const updateContainer = (index, property, newValue) => {
-	props.elements[index] = {
-		...props.elements[index],
-		container: {
-			...props.elements[index].container,
-			[property]: newValue,
-		},
-	};
-};
-
-const moveElement = (index, position) => {
-	if ('up' !== position && 'down' !== position) {
-		throw new Error('The position variable must be "up" or "down".');
-	}
-
-	const totalElements = props.elements.length;
-
-	if (1 < totalElements) {
-		if (0 < index && 'up' === position) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index - 1, 0, item);
-		} else if (totalElements - 1 > index && 'down' === position) {
-			const [item] = props.elements.splice(index, 1);
-			props.elements.splice(index + 1, 0, item);
-		}
-	}
-};
-
-const editElement = () => {
-	editPopup.value = !editPopup.value;
-};
-
-const copyElement = (element, index) => {
-	const clonedElement = {
-		id: Date.now(),
-		type: element.type,
-		label: element.label,
-		value: element.value,
-		container: element.container,
-	};
-
-	props.elements.splice(index + 1, 0, clonedElement);
-};
-
-const deleteElement = (index) => {
-	props.elements.splice(index, 1);
-};
-
-const blurElement = (event) => {
-	// Check if focus remains within the current element
-	if (
-		event.relatedTarget &&
-		event.currentTarget.contains(event.relatedTarget)
-	) {
-		return;
-	}
-
-	// Otherwise, reset the state
-	currentItem.value = null;
-	editPopup.value = false;
-};
-
-const imageOptions = ref([
+const defaultImages = ref([
 	{
 		label: 'Food',
 		value: '/assets/banner-food.webp',
@@ -284,11 +136,139 @@ const imageOptions = ref([
 		value: '/assets/banner-architecture.webp',
 	},
 ]);
+
+const fetchCanvasData = async () => {
+	try {
+		const response = await axios.get('/api/canvas');
+		elements.value = response.data;
+	} catch (error) {
+		console.log('Failed to fetch canvas data:', error);
+	}
+};
+
+const syncCanvas = async () => {
+	try {
+		const response = await axios.put('/api/canvas', toRaw(elements.value));
+		elements.value = response.data;
+	} catch (error) {
+		console.log('Failed to sync canvas data:', error);
+	}
+};
+
+const updateCanvas = async (el) => {
+	const baseElements = toRaw(el);
+	elements.value = Array.isArray(baseElements) ? baseElements : [baseElements];
+
+	await syncCanvas();
+};
+
+const updateElement = ({ id, value }) => {
+	const index = elements.value.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1, {
+			...elements.value[index],
+			...{ value: value },
+		});
+	}
+
+	updateCanvas(elements.value);
+};
+
+const updateImage = (index, newValue) => {
+	elements.value.splice(index, 1, {
+		...elements.value[index],
+		...{ value: newValue },
+	});
+
+	updateCanvas(elements.value);
+};
+
+const copyElement = (element, index) => {
+	const clonedElement = {
+		...element,
+		id: Date.now(),
+	};
+
+	elements.value.splice(index + 1, 0, clonedElement);
+
+	updateCanvas(elements.value);
+};
+
+const deleteElement = (element) => {
+	const index = elements.value.findIndex((el) => el.id === element.id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1);
+	}
+
+	updateCanvas(elements.value);
+};
+
+const moveElement = (index, position) => {
+	if ('up' !== position && 'down' !== position) {
+		throw new Error('The position variable must be "up" or "down".');
+	}
+
+	const totalElements = elements.value.length;
+
+	if (1 < totalElements) {
+		const newIndex = 'up' === position ? index - 1 : index + 1;
+
+		if (0 <= newIndex && newIndex < totalElements) {
+			const temp = elements.value[newIndex];
+			elements.value[newIndex] = elements.value[index];
+			elements.value[index] = temp;
+		}
+	}
+
+	updateCanvas(elements.value);
+};
+
+const editElement = () => (editing.value = !editing.value);
+
+const blurElement = (e) => {
+	// Check if focus remains within the current element
+	if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) {
+		return;
+	}
+
+	// Otherwise, reset the state
+	current.value = null;
+	editing.value = false;
+};
+
+const updateContainer = ({ id, properties }) => {
+	const index = elements.value.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1, {
+			...elements.value[index],
+			...{ container: properties },
+		});
+	}
+
+	updateCanvas(elements.value);
+};
+
+const resizeCanvas = (d) => (device.value = d);
+
+onMounted(fetchCanvasData);
+
+watch(
+	() => props.addedElement,
+	(el) => {
+		if (Object.hasOwn(el, 'id')) {
+			elements.value = [...elements.value, el];
+			updateCanvas(elements.value);
+		}
+	},
+	{ deep: true },
+);
 </script>
 
 <style lang="scss" scope>
 @forward '../../assets/scss/builder/builder-main';
 @forward '../../assets/scss/builder/builder-item';
 @forward '../../assets/scss/builder/builder-area';
-@forward '../../assets/scss/builder/builder-devices';
 </style>
