@@ -160,13 +160,13 @@ const updateCanvas = async (el) => {
 	await syncCanvas();
 };
 
-const updateElement = (properties) => {
-	const index = elements.value.findIndex((el) => el.id === properties.id);
+const updateElement = ({ id, value }) => {
+	const index = elements.value.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {
 		elements.value.splice(index, 1, {
 			...elements.value[index],
-			...{ value: properties.container },
+			...{ value: value },
 		});
 	}
 
@@ -236,7 +236,7 @@ const blurElement = (e) => {
 	editing.value = false;
 };
 
-const updateContainer = (id, properties) => {
+const updateContainer = ({ id, properties }) => {
 	const index = elements.value.findIndex((el) => el.id === id);
 
 	if (-1 !== index) {

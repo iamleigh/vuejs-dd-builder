@@ -54,7 +54,7 @@ const emit = defineEmits(['update:properties']);
 watch(
 	props.properties,
 	(value) => {
-		emit('update:properties', value);
+		emit('update:properties', { id: props.id, properties: value });
 	},
 	{ deep: true },
 );
