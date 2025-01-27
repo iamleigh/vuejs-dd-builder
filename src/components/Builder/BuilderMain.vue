@@ -44,9 +44,9 @@
 								<SettingsContainer
 									:id="element.id"
 									v-model:properties="element.container"
+									:show-height="'ImageElement' === element.type"
+									:show-padding="true"
 									@update:properties="updateContainer"
-									:showHeight="'ImageElement' === element.type"
-									:showPadding="true"
 								/>
 
 								<FieldGroup
@@ -110,6 +110,8 @@ const props = defineProps({
 		default: () => ({}),
 	},
 });
+
+defineEmits(['change']);
 
 const elements = ref([]);
 const device = ref('desktop');

@@ -159,7 +159,7 @@ onMounted(async () => {
 		:clone="cloneElement"
 	/>
 
-	<BuilderMain @change="dropZoneChange" :addedElement="addedElement" />
+	<BuilderMain :added-element="addedElement" @change="dropZoneChange" />
 
 	<Dialog
 		v-model:visible="dialogElements"
