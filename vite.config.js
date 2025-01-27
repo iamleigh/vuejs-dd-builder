@@ -23,6 +23,7 @@ export default defineConfig({
 			'@element': path.resolve(__dirname, './src/components/Admin/Element'),
 			'@styles': path.resolve(__dirname, './src/assets/scss'),
 			'@images': path.resolve(__dirname, './src/assets/img'),
+			'@admin': path.resolve(__dirname, './src/components/Admin'),
 		},
 	},
 });

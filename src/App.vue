@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { asyncLoadComponent } from './utils/asyncLoadComponent';
 import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
@@ -31,32 +31,22 @@ const dialogElements = ref(false);
 const showToolbox = ref(false);
 
 // List of predefined elements
-const elements = ref([
-	{
-		type: 'TextElement',
-		label: 'Text Element',
-		value: 'The quick brown fox jumps over the lazy dog.',
-		container: {
-			vPadding: 30,
-			hPadding: 30,
-			background: '#fff',
-		},
-	},
-	{
-		type: 'ImageElement',
-		label: 'Image Element',
-		value: '/assets/banner-tourism.webp',
-		container: {
-			height: 240,
-			vPadding: 30,
-			hPadding: 30,
-			background: '#fff',
-		},
-	},
-]);
+const elements = ref([]);
+const addedElement = ref({});
 
-// List of elements added to the canvas (drop-zone)
-const droppedElements = ref([]);
+const fetchElements = async () => {
+	try {
+		const response = await fetch('/api/elements');
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch elements: ${response.status}`);
+		}
+
+		elements.value = await response.json();
+	} catch (error) {
+		console.error('Error fetching elements:', error);
+	}
+};
 
 // Func: Toggle menubar visibility
 const toggleSidebar = () => (openMenubar.value = !openMenubar.value);
@@ -85,24 +75,44 @@ const cloneElement = (element) => {
 
 // Func: Add new element on click
 const addElementClick = (element) => {
-	droppedElements.value.push(cloneElement(element));
-	openMenubar.value = false;
-	dialogElements.value = false;
+	addedElement.value = cloneElement(element);
+	dialogElements.value = false; // Close "add element" dialog
+	openMenubar.value = false; // Close mobiles menu bar
 };
 
 // Func: Export elements added to the canvas
 const exportElements = () => {
-	const jsonContent = JSON.stringify(droppedElements.value, null, 2);
-	const blob = new Blob([jsonContent], { type: 'application/json' });
-	const url = URL.createObjectURL(blob);
+	const request = new Request('/api/canvas', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
-	const link = document.createElement('a');
-	link.href = url;
-	link.download = 'content.json';
-	link.click();
+	fetch(request)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`Failed to fetch elements: ${response.status}`);
+			}
 
-	console.log(jsonContent); // Project Requirement: Log the JSON file to the console.
-	URL.revokeObjectURL(url); // Project Requirement: Download JSON file.
+			return response.json();
+		})
+		.then((data) => {
+			const jsonContent = JSON.stringify(data, null, 2);
+			const blob = new Blob([jsonContent], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = 'content.json';
+			link.click();
+
+			console.log(jsonContent); // Project Requirement: Log the JSON file to the console.
+			URL.revokeObjectURL(url); // Project Requirement: Download JSON file.
+		})
+		.catch((error) => {
+			console.log('Error exporting elements:', error);
+		});
 };
 
 // Func: Simulate loading
@@ -112,8 +122,13 @@ const simulateLoadingDelay = (time) => {
 	setTimeout(() => (hideLoadingMask.value = true), time + 1000);
 };
 
-// Start: Simulate loading process
-simulateLoadingDelay(1000);
+// Start: Fetch elements and simulate loading
+onMounted(async () => {
+	await fetchElements();
+
+	// Start: Simulate loading process
+	simulateLoadingDelay(1000);
+});
 </script>
 
 <template>
@@ -144,7 +159,7 @@ simulateLoadingDelay(1000);
 		:clone="cloneElement"
 	/>
 
-	<BuilderMain :elements="droppedElements" @change="dropZoneChange" />
+	<BuilderMain :added-element="addedElement" @change="dropZoneChange" />
 
 	<Dialog
 		v-model:visible="dialogElements"
