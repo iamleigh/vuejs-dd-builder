@@ -159,13 +159,13 @@ const updateCanvas = async (el) => {
 	await syncCanvas();
 };
 
-const updateElement = ({ id, value }) => {
-	const index = elements.value.findIndex((el) => el.id === id);
+const updateElement = (properties) => {
+	const index = elements.value.findIndex((el) => el.id === properties.id);
 
 	if (-1 !== index) {
 		elements.value.splice(index, 1, {
 			...elements.value[index],
-			...{ value: value },
+			...{ value: properties.container },
 		});
 	}
 
