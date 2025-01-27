@@ -24,12 +24,13 @@ const BuilderTheme = definePreset(Aura, {
 });
 
 async function enableMocking() {
-	if (process.env.NODE_ENV === 'development') {
-		const { worker } = await import('./mocks/browser');
-		return worker.start({
-			onUnhandledRequest: 'bypass', // Logs unhandled requests
-		});
-	}
+	const { worker } = await import('./mocks/browser');
+
+	// `worker.start()` returns a Promise that resolves
+	// once the Service Worker is up and ready to intercept requests.
+	return worker.start({
+		onUnhandledRequest: 'bypass', // Logs unhandled requests
+	});
 }
 
 enableMocking().then(() => {
