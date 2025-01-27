@@ -57,6 +57,7 @@
 										:group="element.id"
 										:options="defaultImages"
 										:default-option="element.value"
+										@update="(value) => updateImage(index, value)"
 									/>
 								</FieldGroup>
 							</template>
@@ -168,6 +169,15 @@ const updateElement = (properties) => {
 			...{ value: properties.container },
 		});
 	}
+
+	updateCanvas(elements.value);
+};
+
+const updateImage = (index, newValue) => {
+	elements.value.splice(index, 1, {
+		...elements.value[index],
+		...{ value: newValue },
+	});
 
 	updateCanvas(elements.value);
 };
