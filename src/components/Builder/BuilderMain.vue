@@ -42,7 +42,9 @@
 						>
 							<template #settings>
 								<SettingsContainer
-									:properties="element.container"
+									:id="element.id"
+									v-model:properties="element.container"
+									@update:properties="updateContainer"
 									:showHeight="'ImageElement' === element.type"
 									:showPadding="true"
 								/>
@@ -222,6 +224,19 @@ const blurElement = (e) => {
 	// Otherwise, reset the state
 	current.value = null;
 	editing.value = false;
+};
+
+const updateContainer = (id, properties) => {
+	const index = elements.value.findIndex((el) => el.id === id);
+
+	if (-1 !== index) {
+		elements.value.splice(index, 1, {
+			...elements.value[index],
+			...{ container: properties },
+		});
+	}
+
+	updateCanvas(elements.value);
 };
 
 const resizeCanvas = (d) => (device.value = d);

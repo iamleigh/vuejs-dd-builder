@@ -24,11 +24,17 @@
 </template>
 
 <script setup>
+import { watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputNumber } from 'primevue';
 import FieldGroup from '../../Field/FieldGroup.vue';
 import FieldItem from '../../Field/FieldItem.vue';
 
-defineProps({
+const props = defineProps({
+	id: {
+		type: Number,
+		default: 0,
+		required: true,
+	},
 	properties: {
 		type: Object,
 		default: () => ({}),
@@ -42,6 +48,16 @@ defineProps({
 		default: false,
 	},
 });
+
+const emit = defineEmits(['update:properties']);
+
+watch(
+	props.properties,
+	(value) => {
+		emit('update:properties', { id: props.id, properties: value });
+	},
+	{ deep: true },
+);
 </script>
 
 <style lang="scss" scoped></style>
