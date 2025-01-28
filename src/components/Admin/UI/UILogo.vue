@@ -1,7 +1,7 @@
 <template>
 	<h1 class="leighton-quito-logo" :class="setClass">
 		<img
-			src="../../assets/img/logo.svg"
+			src="@images/logo.svg"
 			alt="Logo icon"
 			class="leighton-quito-logo__icon"
 		/>
@@ -19,5 +19,5 @@ defineProps({
 </script>
 
 <style lang="scss">
-@forward '../../assets/scss/ui/ui-logo';
+@forward '@styles/ui/ui-logo.scss';
 </style>

@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-import HeaderBar from '@header/HeaderBar.vue';
-import HeaderMenu from '@header/HeaderMenu.vue';
+import HeaderBar from '@admin/Header/HeaderBar.vue';
+import HeaderMenu from '@admin/Header/HeaderMenu.vue';
 
 defineProps({
 	openSidebar: {
@@ -25,5 +25,5 @@ defineEmits(['click', 'add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-header';
+@forward '@styles/builder/builder-header';
 </style>

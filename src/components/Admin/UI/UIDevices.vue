@@ -40,5 +40,5 @@ defineEmits(['resize-desktop', 'resize-tablet', 'resize-mobile']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/builder/builder-devices';
+@forward '@styles/builder/builder-devices';
 </style>

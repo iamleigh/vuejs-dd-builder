@@ -3,7 +3,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import { definePreset } from '@primevue/themes';
-import './assets/scss/leighton-quito-core.scss';
+import '@styles/leighton-quito-core.scss';
 
 const BuilderTheme = definePreset(Aura, {
 	semantic: {

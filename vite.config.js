@@ -15,15 +15,10 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
-			'@UI': path.resolve(__dirname, './src/components/UI'),
-			'@Builder': path.resolve(__dirname, './src/components/Builder'),
 			'@Block': path.resolve(__dirname, './src/components/Block'),
-			'@Field': path.resolve(__dirname, './src/components/Field'),
-			'@header': path.resolve(__dirname, './src/components/Admin/Header'),
-			'@element': path.resolve(__dirname, './src/components/Admin/Element'),
+			'@admin': path.resolve(__dirname, './src/components/Admin'),
 			'@styles': path.resolve(__dirname, './src/assets/scss'),
 			'@images': path.resolve(__dirname, './src/assets/img'),
-			'@admin': path.resolve(__dirname, './src/components/Admin'),
 		},
 	},
 });

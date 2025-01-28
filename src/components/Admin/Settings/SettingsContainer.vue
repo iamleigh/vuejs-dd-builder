@@ -26,8 +26,8 @@
 <script setup>
 import { watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputNumber } from 'primevue';
-import FieldGroup from '../../Field/FieldGroup.vue';
-import FieldItem from '../../Field/FieldItem.vue';
+import FieldGroup from '@admin/Field/FieldGroup.vue';
+import FieldItem from '@admin/Field/FieldItem.vue';
 
 const props = defineProps({
 	id: {

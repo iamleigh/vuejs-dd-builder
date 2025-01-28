@@ -37,5 +37,5 @@ defineEmits(['add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/builder/builder-menubar';
+@forward '@styles/builder/builder-menubar';
 </style>

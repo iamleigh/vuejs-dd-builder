@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-import UILogo from '../UI/UILogo.vue';
+import UILogo from '@admin/UI/UILogo.vue';
 
 describe('UILogo', () => {
 	it('renders the component properly', () => {

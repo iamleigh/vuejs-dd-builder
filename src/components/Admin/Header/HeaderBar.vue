@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import UILogo from '@UI/UILogo.vue';
+import UILogo from '@admin/UI/UILogo.vue';
 import { Button } from 'primevue';
 
 defineProps({
@@ -31,5 +31,5 @@ defineEmits(['toggleSidebar']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/builder/builder-topbar';
+@forward '@styles/builder/builder-topbar';
 </style>

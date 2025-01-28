@@ -111,5 +111,5 @@ const buttonProps = reactive({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/block/block-tools';
+@forward '@styles/block/block-tools';
 </style>

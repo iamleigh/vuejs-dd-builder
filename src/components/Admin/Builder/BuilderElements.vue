@@ -16,8 +16,8 @@
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
-import ElementText from '@element/ElementText.vue';
-import ElementImage from '@element/ElementImage.vue';
+import ElementText from '@admin/Element/ElementText.vue';
+import ElementImage from '@admin/Element/ElementImage.vue';
 
 defineProps({
 	elements: {
@@ -44,5 +44,5 @@ const getComponent = (type) => {
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-toolbox';
+@forward '@styles/builder/builder-toolbox';
 </style>
