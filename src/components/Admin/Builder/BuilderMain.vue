@@ -97,8 +97,8 @@
 import { onMounted, ref, toRaw, watch } from 'vue';
 import axios from 'axios';
 import draggableComponent from 'vuedraggable';
-import BlockMain from '../../Block/BlockMain.vue';
-import BlockTools from '../../Block/BlockTools.vue';
+import BlockMain from '@front/Block/BlockMain.vue';
+import BlockTools from '@front/Block/BlockTools.vue';
 import FieldGroup from '@admin/Field/FieldGroup.vue';
 import UIRadioImageGroup from '@admin/UI/UIRadioImageGroup.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
