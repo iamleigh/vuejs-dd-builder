@@ -1,8 +1,8 @@
 <template>
 	<div
 		role="menubar"
-		class="leighton-quito-builder-menubar"
-		:class="{ 'leighton-quito-builder-menubar--active': openSidebar }"
+		class="adminui-menubar"
+		:class="{ 'adminui-menubar--active': openSidebar }"
 	>
 		<Button
 			role="menuitem"
@@ -37,5 +37,38 @@ defineEmits(['add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../../assets/scss/builder/builder-menubar';
+@use '@styles/utils/utils' as *;
+
+.adminui-menubar {
+	display: none;
+	flex-flow: row wrap;
+	justify-content: center;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	margin: $spacing-md;
+	padding: $spacing-sm;
+	border-radius: var(--lq-border-radius-md);
+	background: var(--lq-button-contrast-background, $color-mono-dark);
+
+	// Element: Button
+	button[role='menuitem'] {
+		margin-right: $spacing-sm;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	// State: Active
+	&--active {
+		display: flex;
+	}
+
+	// Hide element in tablets and lower screens
+	@include bp(min-width, md) {
+		display: none;
+	}
+}
 </style>

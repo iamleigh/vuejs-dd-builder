@@ -18,5 +18,5 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/block/block-settings';
+@forward '@styles/block/block-settings';
 </style>

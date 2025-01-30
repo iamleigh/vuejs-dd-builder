@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import UIRadioImage from './UIRadioImage.vue';
+import UIRadioImage from '@admin/UI/UIRadioImage.vue';
 
 // Define the emits for the component
 const emit = defineEmits(['update']);

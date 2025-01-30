@@ -64,5 +64,5 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-toolbox';
+@forward '@styles/builder/builder-toolbox';
 </style>

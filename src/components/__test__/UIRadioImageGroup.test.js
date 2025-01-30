@@ -1,8 +1,8 @@
 import { test, expect, describe, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-import UIRadioImage from '../UI/UIRadioImage.vue';
-import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
+import UIRadioImage from '@admin/UI/UIRadioImage.vue';
+import UIRadioImageGroup from '@admin/UI/UIRadioImageGroup.vue';
 
 describe('UIRadioImageGroup', () => {
 	const options = [

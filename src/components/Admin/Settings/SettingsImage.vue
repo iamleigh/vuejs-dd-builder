@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-import FieldGroup from '../../Field/FieldGroup.vue';
-import UIRadioImageGroup from '../../UI/UIRadioImageGroup.vue';
+import FieldGroup from '@admin/Field/FieldGroup.vue';
+import UIRadioImageGroup from '@admin/UI/UIRadioImageGroup.vue';
 
 defineProps({
 	id: {

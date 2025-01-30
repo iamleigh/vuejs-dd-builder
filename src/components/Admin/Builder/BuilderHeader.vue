@@ -1,5 +1,5 @@
 <template>
-	<header class="leighton-quito-builder-header">
+	<header class="adminui-header">
 		<HeaderBar :open-sidebar="openSidebar" @toggle-sidebar="$emit('click')" />
 		<HeaderMenu
 			:open-sidebar="openSidebar"
@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-import HeaderBar from '@header/HeaderBar.vue';
-import HeaderMenu from '@header/HeaderMenu.vue';
+import HeaderBar from '@admin/Header/HeaderBar.vue';
+import HeaderMenu from '@admin/Header/HeaderMenu.vue';
 
 defineProps({
 	openSidebar: {
@@ -25,5 +25,18 @@ defineEmits(['click', 'add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-header';
+@use '@styles/utils/utils' as *;
+
+.adminui-header {
+	@include bp(max-width, md) {
+		position: sticky;
+		z-index: 100;
+		top: 0;
+		left: 0;
+	}
+
+	@include bp(min-width, md) {
+		flex: 0 0 auto;
+	}
+}
 </style>
