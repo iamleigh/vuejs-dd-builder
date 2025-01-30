@@ -39,7 +39,7 @@ jobs:
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: |
-          CONFIG_PATH=$(pwd)/eslint.config.json
+          CONFIG_PATH=$(pwd)/eslint.config.js
           echo "Using ESLint Config: $CONFIG_PATH"
           npx eslint src/ --config $CONFIG_PATH --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || echo "ESLint run failed"
         continue-on-error: true
