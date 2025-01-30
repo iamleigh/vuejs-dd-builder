@@ -1,5 +1,5 @@
 <template>
-	<aside class="leighton-quito-builder-sidebar">
+	<aside class="adminui-sidebar">
 		<Button
 			class="leighton-quito-builder-sidebar__button"
 			icon="pi pi-plus"
@@ -11,7 +11,7 @@
 		/>
 
 		<Button
-			class="leighton-quito-builder-sidebar__button"
+			class="adminui-sidebar__button"
 			icon="pi pi-download"
 			aria-label="Download"
 			severity="contrast"
@@ -34,5 +34,33 @@ defineEmits(['add-element', 'download']);
 </script>
 
 <style lang="scss" scoped>
-@forward '../../assets/scss/builder/builder-sidebar';
+@use '@styles/utils/utils' as *;
+
+.adminui-sidebar {
+	overflow-y: auto;
+	width: $sidebar-width;
+	position: absolute;
+	z-index: 100;
+	top: #{68px + $spacing-lg};
+	bottom: $spacing-lg;
+	left: $spacing-lg;
+	display: flex;
+	flex-direction: column;
+	padding: $spacing-lg $spacing-md;
+	border-radius: var(--lq-border-radius-md);
+	background: var(--lq-button-contrast-background, $color-mono-dark);
+	color: white;
+
+	@include bp(max-width, md) {
+		display: none;
+	}
+
+	&__button {
+		margin-bottom: $spacing-sm;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
 </style>

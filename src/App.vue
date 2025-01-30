@@ -3,23 +3,23 @@ import { ref, onMounted } from 'vue';
 import { asyncLoadComponent } from './utils/asyncLoadComponent';
 import { Dialog } from 'primevue';
 import 'primeicons/primeicons.css';
-import UILoading from '@UI/UILoading.vue';
+import UILoading from '@admin/UI/UILoading.vue';
 
 // Lazy load components
 const BuilderHeader = asyncLoadComponent(
-	() => import('@Builder/BuilderHeader.vue'),
+	() => import('@admin/Builder/BuilderHeader.vue'),
 );
 const BuilderSidebar = asyncLoadComponent(
-	() => import('@Builder/BuilderSidebar.vue'),
+	() => import('@admin/Builder/BuilderSidebar.vue'),
 );
 const BuilderElements = asyncLoadComponent(
-	() => import('@Builder/BuilderElements.vue'),
+	() => import('@admin/Builder/BuilderElements.vue'),
 );
 const BuilderToolbox = asyncLoadComponent(
-	() => import('@Builder/BuilderToolbox.vue'),
+	() => import('@admin/Builder/BuilderToolbox.vue'),
 );
 const BuilderMain = asyncLoadComponent(
-	() => import('@Builder/BuilderMain.vue'),
+	() => import('@admin/Builder/BuilderMain.vue'),
 );
 
 // State variables

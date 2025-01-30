@@ -97,10 +97,10 @@
 import { onMounted, ref, toRaw, watch } from 'vue';
 import axios from 'axios';
 import draggableComponent from 'vuedraggable';
-import BlockMain from '../Block/BlockMain.vue';
-import BlockTools from '../Block/BlockTools.vue';
-import FieldGroup from '../Field/FieldGroup.vue';
-import UIRadioImageGroup from '../UI/UIRadioImageGroup.vue';
+import BlockMain from '@front/Block/BlockMain.vue';
+import BlockTools from '@front/Block/BlockTools.vue';
+import FieldGroup from '@admin/Field/FieldGroup.vue';
+import UIRadioImageGroup from '@admin/UI/UIRadioImageGroup.vue';
 import UIDevices from '@admin/UI/UIDevices.vue';
 import SettingsContainer from '@admin/Settings/SettingsContainer.vue';
 
@@ -268,7 +268,7 @@ watch(
 </script>
 
 <style lang="scss" scope>
-@forward '../../assets/scss/builder/builder-main';
-@forward '../../assets/scss/builder/builder-item';
-@forward '../../assets/scss/builder/builder-area';
+@forward '@styles/builder/builder-main';
+@forward '@styles/builder/builder-item';
+@forward '@styles/builder/builder-area';
 </style>

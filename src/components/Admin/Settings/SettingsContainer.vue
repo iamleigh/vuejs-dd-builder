@@ -2,21 +2,21 @@
 	<FieldGroup title="Container">
 		<FieldItem v-if="showHeight" title="Height">
 			<InputGroup>
-				<InputNumber v-model="properties.height" :min="0" />
+				<InputNumber v-model="localProperties.height" :min="0" />
 				<InputGroupAddon>px</InputGroupAddon>
 			</InputGroup>
 		</FieldItem>
 
 		<FieldItem v-if="showPadding" title="Vertical Padding">
 			<InputGroup>
-				<InputNumber v-model="properties.vPadding" />
+				<InputNumber v-model="localProperties.vPadding" />
 				<InputGroupAddon>px</InputGroupAddon>
 			</InputGroup>
 		</FieldItem>
 
 		<FieldItem v-if="showPadding" title="Horizontal Padding">
 			<InputGroup>
-				<InputNumber v-model="properties.hPadding" />
+				<InputNumber v-model="localProperties.hPadding" />
 				<InputGroupAddon>px</InputGroupAddon>
 			</InputGroup>
 		</FieldItem>
@@ -24,10 +24,10 @@
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { InputGroup, InputGroupAddon, InputNumber } from 'primevue';
-import FieldGroup from '../../Field/FieldGroup.vue';
-import FieldItem from '../../Field/FieldItem.vue';
+import FieldGroup from '@admin/Field/FieldGroup.vue';
+import FieldItem from '@admin/Field/FieldItem.vue';
 
 const props = defineProps({
 	id: {
@@ -51,13 +51,11 @@ const props = defineProps({
 
 const emit = defineEmits(['update:properties']);
 
-watch(
-	props.properties,
-	(value) => {
-		emit('update:properties', { id: props.id, properties: value });
-	},
-	{ deep: true },
-);
+const localProperties = reactive({ ...props.properties });
+
+watch(localProperties, (value) => {
+	emit('update:properties', { id: props.id, properties: value });
+});
 </script>
 
 <style lang="scss" scoped></style>

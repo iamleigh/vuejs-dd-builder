@@ -32,14 +32,16 @@ jobs:
 
       - name: Install ESLint
         run: |
-          npm install eslint@8.10.0 --legacy-peer-deps
-          npm install @microsoft/eslint-formatter-sarif@3.1.0 --legacy-peer-deps
+          npm install eslint@latest --legacy-peer-deps
+          npm install @microsoft/eslint-formatter-sarif@latest --legacy-peer-deps
 
       - name: Run ESLint
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: |
-          npx eslint src/ --config .eslintrc.json --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || echo "ESLint run failed"
+          CONFIG_PATH=$(pwd)/eslint.config.js
+          echo "Using ESLint Config: $CONFIG_PATH"
+          npx eslint src/ --config $CONFIG_PATH --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || echo "ESLint run failed"
         continue-on-error: true
 
       - name: Verify eslint-results.sarif creation
