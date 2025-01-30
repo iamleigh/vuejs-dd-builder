@@ -1,10 +1,10 @@
 <template>
-	<div class="leighton-quito-builder-topbar">
-		<div class="leighton-quito-builder-topbar__left">
+	<div class="adminui-topbar">
+		<div class="adminui-topbar__left">
 			<UILogo />
 		</div>
 
-		<div class="leighton-quito-builder-topbar__right">
+		<div class="adminui-topbar__right">
 			<Button
 				:aria-label="openSidebar ? 'Open Sidebar' : 'Close Sidebar'"
 				:icon="openSidebar ? 'pi pi-times' : 'pi pi-bars'"
@@ -31,5 +31,30 @@ defineEmits(['toggleSidebar']);
 </script>
 
 <style lang="scss" scoped>
-@forward '@styles/builder/builder-topbar';
+@use '@styles/utils/utils' as *;
+
+.adminui-topbar {
+	display: flex;
+	padding: $spacing-md;
+	background: var(--lq-button-contrast-background, $color-mono-dark);
+
+	@include bp(min-width, md) {
+		padding: $spacing-md $spacing-lg;
+	}
+
+	// Element: Left Content
+	&__left {
+		flex: 1;
+	}
+
+	// Element: Right Content
+	&__right {
+		flex: 0 0 auto;
+		margin-left: $spacing-sm;
+
+		@include bp(min-width, md) {
+			display: none;
+		}
+	}
+}
 </style>
