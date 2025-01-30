@@ -1,19 +1,12 @@
-import eslintPluginVue from 'eslint-plugin-vue';
-import eslintPluginPrettier from 'eslint-plugin-prettier';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import pluginVue from "eslint-plugin-vue";
 
+
+/** @type {import('eslint').Linter.Config[]} */
 export default [
-	...eslintPluginVue.configs['flat/recommended'],
-	{
-		plugins: {
-			prettier: eslintPluginPrettier,
-		},
-		rules: {
-			// Report Prettier issues as ESLint errors
-			'prettier/prettier': 'error',
-		},
-	},
-
-	// Disable conflicting ESLint rules with Prettier
-	eslintConfigPrettier,
+  {files: ["**/*.{js,mjs,cjs,vue}"]},
+  {languageOptions: { globals: globals.browser }},
+  pluginJs.configs.recommended,
+  ...pluginVue.configs["flat/essential"],
 ];

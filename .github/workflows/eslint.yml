@@ -39,7 +39,7 @@ jobs:
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
         run: |
-          npx eslint src/ --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || echo "ESLint run failed"
+          npx eslint src/ --config .eslintrc.json --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || echo "ESLint run failed"
         continue-on-error: true
 
       - name: Verify eslint-results.sarif creation
