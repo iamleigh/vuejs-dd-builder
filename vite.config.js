@@ -17,6 +17,7 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './src'),
 			'@admin': path.resolve(__dirname, './src/components/Admin'),
 			'@front': path.resolve(__dirname, './src/components/Front'),
+			'@utils': path.resolve(__dirname, './src/utils'),
 			'@styles': path.resolve(__dirname, './src/assets/scss'),
 			'@images': path.resolve(__dirname, './src/assets/img'),
 		},
